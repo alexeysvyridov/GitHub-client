@@ -1,0 +1,25 @@
+.navigation {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  background-color: blueviolet;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.right-side {
+  display: flex;
+}
+.left-side {
+  color:#fff;
+  font-size: 1.2rem;
+}
+.tab {
+  height: 50px;
+  width: 100px;
+  border: 1px solid #d1d1d1;
+  text-align: center;
+  line-height: 50px;
+  color:#fff;
+  cursor: pointer;
+}
