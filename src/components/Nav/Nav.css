@@ -6,6 +6,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+ 
+}
+ul li {
+  list-style: none;
 }
 .right-side {
   display: flex;
@@ -22,4 +26,7 @@
   line-height: 50px;
   color:#fff;
   cursor: pointer;
+}
+.selected {
+  background: #d1d1d1;
 }

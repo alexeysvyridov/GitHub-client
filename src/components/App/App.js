@@ -1,9 +1,10 @@
 
 import React, {useEffect} from 'react';
+import {BrowserRouter as Router, NavLink, Switch, Route,activeClassName } from 'react-router-dom';
 import {connect} from 'react-redux';
-import Table from '../Table/Table';
-import Header from '../Header/Header';
-import SearchBar from '../Search-bar/Search-bar';
+import Nav from '../Nav/Nav';
+import Fovorite from '../Favorite/Favorite';
+import Home from '../Home/Home';
 import './App.css';
 
 function App() {
@@ -21,13 +22,20 @@ function App() {
   //   }
   // }
   // getUsers()
+
+ 
   return (
-    <div className="App">
-      <Header />
-      <SearchBar/>
-      <Table />
+  <div className="App">
+  <Router>
+    <Nav/>
+    <Switch>
+      <Route path="/" component={Home} exact/>
+      <Route path="/favorite" component={Fovorite}/>
+    </Switch>
+    </Router>
     </div>
   );
+
 }
 
 export default App;
