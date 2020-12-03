@@ -8,22 +8,7 @@ import Home from '../Home/Home';
 import './App.css';
 
 function App() {
-  // useEffect(() => {
-  //   getUsers()
-  // })
-  // const getUsers = async () => {
-  //   try {
-  //     let res = await fetch('./users.json')
-  //     let users = await res.json();
-  //     console.log(users);
-  //   } catch(err) {
-  //     console.log(err);
-  //     throw new Error(err)
-  //   }
-  // }
-  // getUsers()
-
- 
+  
   return (
   <div className="App">
   <Router>
