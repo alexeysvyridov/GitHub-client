@@ -55,38 +55,43 @@ let patients =  [{
   "isActive": true
 }];
 
-const Home = props => {
+const Home = () => {
   const [query, setQuery] = useState('');
   const [loading, setloading] = useState(false);
   const [users, setUsers] = useState([]);
   let gitHubReposService = new GitHubReposService();
 
-  useEffect(() => {
-    gitHubReposService
-    .getUsers(patients)
-      .then((data) => {
-        setUsers(data);
-      });
-  },[]);
+  useEffect(() => { 
+    if(users.length == 0) {
+      gitHubReposService
+      .getUsers()
+        .then((data) => {
+         let item = data.items;
+          setUsers(item);
+        });
+    }
+  },[users]);
 
   const onHandleInput = (input) => {
+    setloading(true);
     let query = input.target.value.toLowerCase();
-    let res =  patients.filter(pa => {
-      pa.name = pa.name.toLowerCase()
-      return (
-                (pa.name && pa.name.includes(query)) ||
-                (pa.repo && pa.repo.includes(query))
-              )
-    });
-    setUsers(res)
-
-    // setloading(true);
-    // setQuery(query);
+    let _url  = `https://api.github.com/search/users?q=${query}/repos`;
+    gitHubReposService
+    .getUsers(_url)
+      .then((data) => {
+       let item = data.items;
+       console.log(item);
+        setUsers(item);
+      });
+    setTimeout(() => {
+      setloading(false);
+    })
   };
+
   return (
-    <div style={{maxWidth: '600px', marginLeft: '10px'}}>
+    <div style={{ width: '800px', marginLeft: '10px', marginTop: '10px'}}>
       <SearchBar users={users} onHandleInput={onHandleInput}/>
-      <BasicTable users={users}/>
+      <BasicTable users={users} loading={loading}/>
     </div>
   )
 }
