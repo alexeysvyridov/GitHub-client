@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import './Search-bar.css';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
+import './Search-bar.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
-      width: '100%',
+      width: '750px',
     },
   },
 }));

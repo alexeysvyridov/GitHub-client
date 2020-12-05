@@ -3,64 +3,31 @@ import PropTypes from 'prop-types'
 import BasicTable from '../Table/Table';
 import SearchBar from '../Search-bar/Search-bar';
 import GitHubReposService from '../../services';
-let patients =  [{
-  "id": 0,
-  "repo": "http://placehold.it/32x32",
-  "age": 23,
-  "name": "Bird Ramsey",
-  "gender": "male",
-  "company": "NIMON",
-  "email": "birdramsey@nimon.com",
-  "stars": 341224,
-  "isActive": false
-},
-{
-  "id": 1,
-  "balance": "$2,499.49",
-  "repo": "http://placehold.it/32x32",
-  "age": 31,
-  "name": "Lillian Burgess",
-  "gender": "female",
-  "stars": 3424,
-  "isActive": true
-},
-{
-  "id": 2,
-  "balance": "$2,820.18",
-  "repo": "http://placehold.it/32x32",
-  "age": 34,
-  "name": "Kristie Cole",
-  "gender": "female",
-  "stars": 1114,
-  "isActive": false
-},
-{
-  "id": 3,
-  "balance": "$3,277.32",
-  "repo": "http://placehold.it",
-  "age": 30,
-  "name": "Leonor Cross",
-  "gender": "female",
-  "stars": 555114,
-  "isActive": true
-},
-{
-  "id": 4,
-  "balance": "$1,972.47",
-  "repo": "http://placehold.it/32x32",
-  "age": 28,
-  "name": "Marsh Mccall",
-  "gender": "male",
-  "stars": 741,
-  "isActive": true
-}];
-
+import Modal from '../Modal/Modal';
+import './Home.css';
 const Home = () => {
   const [query, setQuery] = useState('');
   const [loading, setloading] = useState(false);
   const [users, setUsers] = useState([]);
   let gitHubReposService = new GitHubReposService();
-
+  const [open, setOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
+  const [favorite, setFavorite] = useState([]);
+  const handleClickOpen = (user) => {
+   setOpen(true);
+   setCurrentUser(user);
+  }
+  const addUserToFavorite = (user) => {
+    setFavorite(favorite => favorite.concat(user))
+  }
+  const removeUserFromFavorite = (index) => {
+    setFavorite(favorite => favorite.slice(index, 1))
+  }
+  const handleClose = () => {
+   setOpen(false);
+   setCurrentUser({})
+  }
+  
   useEffect(() => { 
     if(users.length == 0) {
       gitHubReposService
@@ -89,9 +56,23 @@ const Home = () => {
   };
 
   return (
-    <div style={{ width: '800px', marginLeft: '10px', marginTop: '10px'}}>
-      <SearchBar users={users} onHandleInput={onHandleInput}/>
-      <BasicTable users={users} loading={loading}/>
+    <div style={{display:"flex", width:'100%'}}>
+      <div className="main-home">
+        <div className="search-bar">
+          <SearchBar users={users} onHandleInput={onHandleInput}/>
+        </div>
+        <div className="table">
+          <BasicTable
+          setCurrentUser={setCurrentUser} 
+          users={users}
+          loading={loading}
+          handleClickOpen={handleClickOpen} 
+          />
+        </div>
+      </div>
+      <div className="modal" style={{display:"inline-block", width: '50%'}}>
+        {open && <Modal user={currentUser} handleClose={handleClose}/>}
+      </div>
     </div>
   )
 }

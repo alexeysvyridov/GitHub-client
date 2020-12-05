@@ -1,0 +1,60 @@
+a,div,p {
+  font-weight: bold;
+  font-size: 14px;
+}
+.container-modal {
+  width: 100%;
+  height: auto;
+
+}
+.container-modal {
+  background-color: #d1d1d1;
+  border: 1px solid #808080;
+  border-radius: 4px;
+}
+.header-mobal > span {
+  line-height: 25px;
+}
+.github-link {
+  display: flex;
+  align-items: center;
+}
+.fa.fa-github {
+  font-size: 18px;
+  margin-left: 10px;
+}
+header, .body-modal {
+  padding: 10px;
+}
+.header-mobal {
+  width: 100%;
+  border-bottom: 1px solid #808080;
+  height: 25px;
+  line-height: 25px;
+  color:#002884;
+  display: flex;
+  justify-content: space-between;
+}
+.block-padding {
+  padding: 0px 10px;
+}
+.body-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.body-row > img.avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 1px solid #d1d1d1;
+}
+footer {
+  padding: 0px 0px 10px 10px;
+}
+footer.footer > button {
+  background-color: #448aff;
+  color:#fff;
+  padding: 8px;
+}
+

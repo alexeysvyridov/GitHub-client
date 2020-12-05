@@ -9,23 +9,15 @@ import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import Spinner from '../Spinner/Spinner';
+import './Table.css'
 const useStyles = makeStyles({
   table: {
     width: 450,
   }
 });
 
-const BasicTable = ({users, loading}) => {
+const BasicTable = ({users, loading, handleClickOpen}) => {
   const classes = useStyles();
-
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {
-   setOpen(true)
-  }
-  const handleClose = () => {
-   setOpen(false)
-  }
-  
     if(loading)  {
       return (
         <div style={{width: '100%', 'textAlign': 'center'}}>
@@ -33,12 +25,15 @@ const BasicTable = ({users, loading}) => {
         </div>
       ) 
     }
+    const ckeckUnCheckFavorite = () => {
+
+    }
   if(users.length === 0 && !loading) {
    return <h1>Has no data in the list....</h1>
   }  
   if(!loading) {
     return (
-    <div>
+    <div style={{display: 'flex', width:'750px', height:'600px', overflow:'auto'}}>
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
@@ -50,13 +45,17 @@ const BasicTable = ({users, loading}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((row, index) => (
-              <TableRow key={row.id} onClick={() => handleClickOpen()}>
-                <TableCell align="right">{index}</TableCell>
-                <TableCell align="right">{row.full_name}</TableCell>
-                <TableCell align="right">{row.stargazers_count}</TableCell>
-                <TableCell align="right">
-                  <span className="fa fa-star checked"></span>
+            {users.map((user, index) => (
+              <TableRow key={user.id} onClick={() => handleClickOpen(user)}>
+                <TableCell align="right"><span className="couter">{index}</span> </TableCell>
+                <TableCell align="right">{user.full_name}</TableCell>
+                <TableCell align="right">{user.stargazers_count}</TableCell>
+                <TableCell align="right" onClick={() => ckeckUnCheckFavorite()}>
+                <span className="fa fa-star"></span>
+                  {/* {checked ? 
+                            <span className="fa fa-star"></span> :
+                             <span className="fa fa-star checked"></span>
+                  } */}
                  </TableCell>
               </TableRow>
             ))}

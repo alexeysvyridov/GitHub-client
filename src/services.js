@@ -6,7 +6,7 @@ let _url  = `https://api.github.com/search/repositories?q=Brad&sort=stars&order=
       method: 'GET',
       headers: {
         'Accept': 'application/vnd.github.v3+json',
-        'Authorization': 'token bebeda9632952eeeacaffcf37b98a340f524ffc5'
+        'Authorization': 'token b08828ef76912d6b02d5efc87f68460c4f0eacf9 '
       }
     });
     const data = await res.json() 
