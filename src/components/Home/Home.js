@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import BasicTable from '../Table/Table';
 import SearchBar from '../Search-bar/Search-bar';
 import GitHubReposService from '../../services';
-import Modal from '../Modal/Modal';
+import Cart from '../Cart/Cart';
 import './Home.css';
 
 const Home = () => {
@@ -38,18 +38,21 @@ const Home = () => {
        let item = data.items;
        console.log(item);
         setUsers(item);
-      });
-
-      gitHubReposService
-      .checkStared()
-        .then((data) => {
-          setStared(data)
-        });
+      })
 
     setTimeout(() => {
       setloading(false);
     });
   };
+
+  useEffect(() => {
+      gitHubReposService
+        .checkStared('https://api.github.com/user/starred')
+        .then((data) => {
+         let staredId = data.map(repo => repo.id) 
+         setStared()
+        })
+  },[]);
 
   const debouncer = useCallback(_.debounce(q => sendQuery(q), 1500), []); 
   const onHandleInput = (input) => {
@@ -76,7 +79,7 @@ const Home = () => {
         </div>
       </div>
       <div className="modal" style={{display:"inline-block", width: '50%'}}>
-        {open && <Modal user={currentUser} handleClose={handleClose}/>}
+        {open && <Cart user={currentUser} handleClose={handleClose}/>}
       </div>
     </div>
   )

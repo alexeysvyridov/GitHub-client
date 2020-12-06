@@ -21,7 +21,6 @@ const BasicTable = ({users, loading, handleClickOpen, stared}) => {
   const classes = useStyles();
   const [star, setStar] = useState({});
   const service = new Service();
-
   const updateStar = (ownerName, repoName) => {
     service.starring(ownerName, repoName)
   };

@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
-import './Modal.css';
- const Modal = ({user, handleClose}) => {
+import './Cart.css';
+ const Cart = ({user, handleClose}) => {
   return (
     <div className="container-modal">
       <header>
@@ -32,4 +32,4 @@ import './Modal.css';
     </div>
   )
 }
-export default Modal;
+export default Cart;
