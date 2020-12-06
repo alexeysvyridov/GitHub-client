@@ -23,12 +23,15 @@ a,div,p {
   font-size: 18px;
   margin-left: 10px;
 }
+header {
+  border-bottom: 1px solid #808080;
+}
 header, .body-modal {
   padding: 10px;
 }
+
 .header-mobal {
   width: 100%;
-  border-bottom: 1px solid #808080;
   height: 25px;
   line-height: 25px;
   color:#002884;

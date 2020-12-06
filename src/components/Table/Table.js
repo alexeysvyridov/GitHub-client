@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import Spinner from '../Spinner/Spinner';
+import Service from '../../services';
 import './Table.css'
 const useStyles = makeStyles({
   table: {
@@ -16,18 +17,25 @@ const useStyles = makeStyles({
   }
 });
 
-const BasicTable = ({users, loading, handleClickOpen}) => {
+const BasicTable = ({users, loading, handleClickOpen, stared}) => {
   const classes = useStyles();
-    if(loading)  {
-      return (
-        <div style={{width: '100%', 'textAlign': 'center'}}>
-          <CircularProgress disableShrink />
-        </div>
-      ) 
-    }
-    const ckeckUnCheckFavorite = () => {
+  const [star, setStar] = useState({});
+  const service = new Service();
 
-    }
+  const updateStar = (ownerName, repoName) => {
+    service.starring(ownerName, repoName)
+  };
+  const deleteStar = (ownerName, repoName) => {
+    service.unStarring(ownerName, repoName)
+  };
+
+  if(loading)  {
+    return (
+      <div style={{width: '100%', 'textAlign': 'center'}}>
+        <CircularProgress disableShrink />
+      </div>
+    ) 
+  }
   if(users.length === 0 && !loading) {
    return <h1>Has no data in the list....</h1>
   }  
@@ -35,9 +43,9 @@ const BasicTable = ({users, loading, handleClickOpen}) => {
     return (
     <div style={{display: 'flex', width:'750px', height:'600px', overflow:'auto'}}>
       <TableContainer component={Paper}>
-        <Table aria-label="simple table">
+        <Table stickyHeader>
           <TableHead>
-            <TableRow>
+            <TableRow className="background">
               <TableCell align="right">№</TableCell>  
               <TableCell align="right">Repo</TableCell>
               <TableCell align="right">Stars</TableCell>
@@ -46,16 +54,13 @@ const BasicTable = ({users, loading, handleClickOpen}) => {
           </TableHead>
           <TableBody>
             {users.map((user, index) => (
-              <TableRow key={user.id} onClick={() => handleClickOpen(user)}>
+              <TableRow key={user.id}>
                 <TableCell align="right"><span className="couter">{index}</span> </TableCell>
-                <TableCell align="right">{user.full_name}</TableCell>
+                <TableCell align="right" onClick={() => handleClickOpen(user)}>{user.full_name}</TableCell>
                 <TableCell align="right">{user.stargazers_count}</TableCell>
-                <TableCell align="right" onClick={() => ckeckUnCheckFavorite()}>
-                <span className="fa fa-star"></span>
-                  {/* {checked ? 
-                            <span className="fa fa-star"></span> :
-                             <span className="fa fa-star checked"></span>
-                  } */}
+                <TableCell align="right">
+                  <span className="fa fa-star"  onClick={() => updateStar(user.owner.login, user.name)}></span>
+                  {/* <span className="fa fa-star checked"  onClick={() => deleteStar(user.owner.login, user.name)}></span>: */}
                  </TableCell>
               </TableRow>
             ))}

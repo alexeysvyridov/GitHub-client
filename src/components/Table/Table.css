@@ -1,11 +1,16 @@
 table{
-  background-color: #d1d1d1;
+
   height: 800px;
   overflow: auto;
 }
-table thead {
-  background-color: #c481de;
+
+table {
+  background-color: #d1d1d1;
 }
 .couter {
   color: blue;
+}
+
+.MuiTableCell-root.MuiTableCell-head {
+  background-color: #c481de;
 }

@@ -6,3 +6,10 @@
   overflow: auto;
   padding: 10px;
 }
+
+.fa.fa-star.checked {
+  color: yellow;
+}
+.fa.fa-star {
+  color: #fff;
+}

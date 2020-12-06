@@ -1,48 +1,37 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import _ from 'lodash'
 import PropTypes from 'prop-types'
 import BasicTable from '../Table/Table';
 import SearchBar from '../Search-bar/Search-bar';
 import GitHubReposService from '../../services';
 import Modal from '../Modal/Modal';
 import './Home.css';
+
 const Home = () => {
   const [query, setQuery] = useState('');
+  const [sentUserQuery, setUserQuery] = useState('')
   const [loading, setloading] = useState(false);
   const [users, setUsers] = useState([]);
   let gitHubReposService = new GitHubReposService();
   const [open, setOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [favorite, setFavorite] = useState([]);
+  const [stared, setStared] = useState([])
+  
   const handleClickOpen = (user) => {
    setOpen(true);
    setCurrentUser(user);
   }
-  const addUserToFavorite = (user) => {
-    setFavorite(favorite => favorite.concat(user))
-  }
-  const removeUserFromFavorite = (index) => {
-    setFavorite(favorite => favorite.slice(index, 1))
-  }
+
+
   const handleClose = () => {
    setOpen(false);
-   setCurrentUser({})
-  }
-  
-  useEffect(() => { 
-    if(users.length == 0) {
-      gitHubReposService
-      .getUsers()
-        .then((data) => {
-         let item = data.items;
-          setUsers(item);
-        });
-    }
-  },[users]);
+   setCurrentUser({});
+  };
 
-  const onHandleInput = (input) => {
-    setloading(true);
-    let query = input.target.value.toLowerCase();
-    let _url  = `https://api.github.com/search/users?q=${query}/repos`;
+  const sendQuery = (query) => {
+    console.log(query);
+    let _url  = `https://api.github.com/search/repositories?q=${query}&sort=stars&order=desc&per_page=10`;
     gitHubReposService
     .getUsers(_url)
       .then((data) => {
@@ -50,11 +39,32 @@ const Home = () => {
        console.log(item);
         setUsers(item);
       });
+
+      gitHubReposService
+      .checkStared()
+        .then((data) => {
+          setStared(data)
+        });
+
     setTimeout(() => {
       setloading(false);
-    })
+    });
   };
 
+  const debouncer = useCallback(_.debounce(q => sendQuery(q), 1500), []); 
+  const onHandleInput = (input) => {
+    setloading(true);
+    let query = input.target.value.toLowerCase();
+    setUserQuery(query);
+    debouncer(query);
+  };
+
+  let objProps = {
+    handleClickOpen,
+    users,
+    loading,
+    stared
+  }
   return (
     <div style={{display:"flex", width:'100%'}}>
       <div className="main-home">
@@ -62,12 +72,7 @@ const Home = () => {
           <SearchBar users={users} onHandleInput={onHandleInput}/>
         </div>
         <div className="table">
-          <BasicTable
-          setCurrentUser={setCurrentUser} 
-          users={users}
-          loading={loading}
-          handleClickOpen={handleClickOpen} 
-          />
+          <BasicTable {...objProps} />
         </div>
       </div>
       <div className="modal" style={{display:"inline-block", width: '50%'}}>

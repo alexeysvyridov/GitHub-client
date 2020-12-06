@@ -1,18 +1,76 @@
 // let _url  = 'https://api.github.com/search/users?q=brad+repos:%3E10+followers:%3E250';
-let _url  = `https://api.github.com/search/repositories?q=Brad&sort=stars&order=desc`;
+// let _url  = `https://api.github.com/search/repositories?q=Brad&sort=stars&order=desc`;
+const token = 'token 5e4856ce61125a8d81ae198b91df050ce86ef601';
   export default class GitHubReposService {
-  getUsers = async (url=_url) => {
-    const res = await fetch(_url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/vnd.github.v3+json',
-        'Authorization': 'token b08828ef76912d6b02d5efc87f68460c4f0eacf9 '
-      }
-    });
-    const data = await res.json() 
-    console.log(data);
-    return data;
+  getUsers = async (url) => {
+    try {
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/vnd.github.v3+json',
+          'Authorization': token
+        }
+      });
+      const data = await res.json() 
+      return data;
+    } catch(err) {
+      throw new Error(err)
+    }
   }
+  checkStared = async (url) => {
+    try {
+      const res = await fetch('https://api.github.com/user/starred',
+      {
+        method:'GET',
+        headers: {
+          'Accept': 'application/vnd.github.v3+json',
+          'Authorization': token
+        }
+      })
+      const data = await res.json();
+      console.log(data);
+      return data;
+    }
+    catch(err) {
+      throw new Error(err)
+    }
+  }
+  starring = async (owner, repo) => {
+    try {
+      const res = await fetch(`https://api.github.com/user/starred/${owner}/${repo}`,
+      {
+        method:'PUT',
+        headers: {
+          'Accept': 'application/vnd.github.v3.star+json',
+          'Authorization': token
+        }
+      })
+      console.log(res);
+      return res;
+    }
+    catch(err) {
+      console.log(err)
+      throw new Error(err)
+    }
+  }
+  unStarring = async (owner, repo) => {
+    try {
+      const res = await fetch(`https://api.github.com/user/starred/${owner}/${repo}`,
+      {
+        method:'DELETE',
+        headers: {
+          'Accept': 'application/vnd.github.v3.star+json',
+          'Authorization': token
+        }
+      })
+      console.log(res);
+      return res;
+    }
+    catch(err) {
+      console.log(err)
+      throw new Error(err)
+    }
+  };
 };
 
 new GitHubReposService()
