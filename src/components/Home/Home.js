@@ -13,26 +13,40 @@ const Home = () => {
   let gitHubReposService = new GitHubReposService();
   const [open, setOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const [stared, setStared] = useState([])
-  
+  const [stared, setStared] = useState([]);
+
+  const deleteStar = (user) => {
+    gitHubReposService.unStarring(user.owner.login, user.name)
+    user.stargazers_count -= 1;
+    let filtredElem = stared.filter(person => person.full_name !== user.full_name && person.id !== user.id)
+    setStared(filtredElem)
+  };
+
+  const updateStar = (user) => {
+    gitHubReposService.starring(user.owner.login, user.name)
+    user.stargazers_count += 1;
+    setStared((prev) => {
+     return [...prev, user]
+    })
+  };
+
   const handleClickOpen = (user) => {
    setOpen(true);
    setCurrentUser(user);
-  }
+  };
 
-  const handleClose = () => {
+  const handleClose = (user, isAdd) => {
+   isAdd ? updateStar(user) : deleteStar(user); 
    setOpen(false);
    setCurrentUser({});
   };
 
   const sendQuery = (query) => {
-    console.log(query);
     let _url  = `https://api.github.com/search/repositories?q=${query}&sort=stars&order=desc&per_page=10`;
     gitHubReposService
     .getUsers(_url)
       .then((data) => {
        let item = data.items;
-       console.log(item);
         setUsers(item);
       })
 
@@ -55,13 +69,20 @@ const Home = () => {
     let query = input.target.value.toLowerCase();
     debouncer(query);
   };
+  let checkStarring = (user) => stared.findIndex(person => person.full_name === user.full_name) > -1;
 
   let objProps = {
     handleClickOpen,
     users,
     loading,
     stared,
-    setStared
+    setStared,
+    updateStar,
+    deleteStar,
+    currentUser,
+    checkStarring,
+    currentUser,
+    handleClose
   }
   return (
     <div style={{display:"flex", width:'100%'}}>
@@ -74,7 +95,7 @@ const Home = () => {
         </div>
       </div>
       <div className="modal" style={{display:"inline-block", width: '50%'}}>
-        {open && <Cart user={currentUser} handleClose={handleClose}/>}
+        {open && <Cart {...objProps}/>}
       </div>
     </div>
   )

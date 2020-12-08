@@ -16,26 +16,20 @@ const useStyles = makeStyles({
   }
 });
 
-const BasicTable = ({ users, loading, handleClickOpen, stared=[], setStared }) => {
+const BasicTable = (props) => {
+  const {
+    users,
+    loading,
+    handleClickOpen,
+    stared=[],
+    setStared,
+    updateStar, 
+    deleteStar,
+    checkStarring
+    } = props;
   const classes = useStyles();
   const service = new Service();
-
-
-  let checkStarring = (user) => stared.findIndex(person => person.full_name === user.full_name) > -1;
-
-  const updateStar = (user) => {
-    service.starring(user.owner.login, user.name)
-    setStared((prev) => {
-     return [...prev, user]
-    })
-  };
-
-  const deleteStar = (user) => {
-    service.unStarring(user.owner.login, user.name)
-    let filtredElem = stared.filter(person => person.full_name != user.full_name && person.id != user.id)
-    setStared(filtredElem)
-  };
- 
+  
   if(loading)  {
     return (
       <div style={{width: '100%', 'textAlign': 'center'}}>
@@ -43,7 +37,7 @@ const BasicTable = ({ users, loading, handleClickOpen, stared=[], setStared }) =
       </div>
     ) 
   }
-  if(users.length === 0 && !loading) {
+  if(!users || users.length === 0 && !loading) {
    return <h1>Has no data in the list....</h1>
   }  
   if(!loading) {
@@ -63,12 +57,17 @@ const BasicTable = ({ users, loading, handleClickOpen, stared=[], setStared }) =
             {users.map((user, index) => (
               <TableRow key={user.id}>
                 <TableCell align="right"><span className="couter">{index}</span> </TableCell>
-                <TableCell align="right" onClick={() => handleClickOpen(user)}>{user.full_name}</TableCell>
+                <TableCell align="right" style={{cursor:'pointer'}}
+                 onClick={() => handleClickOpen(user)}>
+                 {user.full_name}
+                </TableCell>
                 <TableCell align="right">{user.stargazers_count}</TableCell>
                 <TableCell align="right" style={{position:'relative'}}>
                  <form>
-                 {checkStarring(user) ? <input type="checkbox" className="star" title="bookmark page" checked={true}  onChange={() => deleteStar(user)} /> :
-                    <input type="checkbox" className="star" title="bookmark page" checked={false} onChange={() => updateStar(user)} />
+                 {checkStarring(user) ?
+                  (<input type="checkbox" className="star" title="bookmark page" checked={true}  onChange={() => deleteStar(user)} />) 
+                                      :    
+                  (<input type="checkbox" className="star" title="bookmark page" checked={false} onChange={() => updateStar(user)} />)
                   } 
                   </form>  
                  </TableCell>

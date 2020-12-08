@@ -1,6 +1,6 @@
 // let _url  = 'https://api.github.com/search/users?q=brad+repos:%3E10+followers:%3E250';
 // let _url  = `https://api.github.com/search/repositories?q=Brad&sort=stars&order=desc`;
-const token = 'token 8b7f185d269211161375c4ce3b5b2e8ac7c174a6';
+const token = 'token 4ebf009ed3b2afb5dacc80d550f6964f78216693';
   export default class GitHubReposService {
   getUsers = async (url) => {
     try {
@@ -62,7 +62,6 @@ const token = 'token 8b7f185d269211161375c4ce3b5b2e8ac7c174a6';
           'Authorization': token
         }
       })
-      console.log(res);
       return res;
     }
     catch(err) {
