@@ -8,21 +8,17 @@ import Cart from '../Cart/Cart';
 import './Home.css';
 
 const Home = () => {
-  const [query, setQuery] = useState('');
-  const [sentUserQuery, setUserQuery] = useState('')
   const [loading, setloading] = useState(false);
   const [users, setUsers] = useState([]);
   let gitHubReposService = new GitHubReposService();
   const [open, setOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const [favorite, setFavorite] = useState([]);
   const [stared, setStared] = useState([])
   
   const handleClickOpen = (user) => {
    setOpen(true);
    setCurrentUser(user);
   }
-
 
   const handleClose = () => {
    setOpen(false);
@@ -46,19 +42,17 @@ const Home = () => {
   };
 
   useEffect(() => {
-      gitHubReposService
-        .checkStared('https://api.github.com/user/starred')
-        .then((data) => {
-         let staredId = data.map(repo => repo.id) 
-         setStared()
-        })
+    gitHubReposService
+    .checkStared('https://api.github.com/user/starred')
+    .then((data) => {
+     setStared(data)
+    })
   },[]);
 
   const debouncer = useCallback(_.debounce(q => sendQuery(q), 1500), []); 
   const onHandleInput = (input) => {
     setloading(true);
     let query = input.target.value.toLowerCase();
-    setUserQuery(query);
     debouncer(query);
   };
 
@@ -66,7 +60,8 @@ const Home = () => {
     handleClickOpen,
     users,
     loading,
-    stared
+    stared,
+    setStared
   }
   return (
     <div style={{display:"flex", width:'100%'}}>

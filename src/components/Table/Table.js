@@ -8,7 +8,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
-import Spinner from '../Spinner/Spinner';
 import Service from '../../services';
 import './Table.css'
 const useStyles = makeStyles({
@@ -17,17 +16,26 @@ const useStyles = makeStyles({
   }
 });
 
-const BasicTable = ({users, loading, handleClickOpen, stared}) => {
+const BasicTable = ({ users, loading, handleClickOpen, stared=[], setStared }) => {
   const classes = useStyles();
-  const [star, setStar] = useState({});
   const service = new Service();
-  const updateStar = (ownerName, repoName) => {
-    service.starring(ownerName, repoName)
-  };
-  const deleteStar = (ownerName, repoName) => {
-    service.unStarring(ownerName, repoName)
+
+
+  let checkStarring = (user) => stared.findIndex(person => person.full_name === user.full_name) > -1;
+
+  const updateStar = (user) => {
+    service.starring(user.owner.login, user.name)
+    setStared((prev) => {
+     return [...prev, user]
+    })
   };
 
+  const deleteStar = (user) => {
+    service.unStarring(user.owner.login, user.name)
+    let filtredElem = stared.filter(person => person.full_name != user.full_name && person.id != user.id)
+    setStared(filtredElem)
+  };
+ 
   if(loading)  {
     return (
       <div style={{width: '100%', 'textAlign': 'center'}}>
@@ -57,9 +65,12 @@ const BasicTable = ({users, loading, handleClickOpen, stared}) => {
                 <TableCell align="right"><span className="couter">{index}</span> </TableCell>
                 <TableCell align="right" onClick={() => handleClickOpen(user)}>{user.full_name}</TableCell>
                 <TableCell align="right">{user.stargazers_count}</TableCell>
-                <TableCell align="right">
-                  <span className="fa fa-star"  onClick={() => updateStar(user.owner.login, user.name)}></span>
-                  {/* <span className="fa fa-star checked"  onClick={() => deleteStar(user.owner.login, user.name)}></span>: */}
+                <TableCell align="right" style={{position:'relative'}}>
+                 <form>
+                 {checkStarring(user) ? <input type="checkbox" className="star" title="bookmark page" checked={true}  onChange={() => deleteStar(user)} /> :
+                    <input type="checkbox" className="star" title="bookmark page" checked={false} onChange={() => updateStar(user)} />
+                  } 
+                  </form>  
                  </TableCell>
               </TableRow>
             ))}

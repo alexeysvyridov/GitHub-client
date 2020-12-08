@@ -27,7 +27,7 @@ import './Cart.css';
       </div>
       <p className="block-padding">{user.description}</p>
       <footer className="footer">
-        <button onClick={handleClose}>Delete from favorite</button>
+        <button onClick={() => handleClose(user)}>Delete from favorite</button>
       </footer>
     </div>
   )
