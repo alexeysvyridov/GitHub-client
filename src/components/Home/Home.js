@@ -7,28 +7,12 @@ import GitHubReposService from '../../services';
 import Cart from '../Cart/Cart';
 import './Home.css';
 
-const Home = () => {
+const Home = ({stared, setStared, deleteStar, updateStar, checkStarring}) => {
   const [loading, setloading] = useState(false);
   const [users, setUsers] = useState([]);
   let gitHubReposService = new GitHubReposService();
   const [open, setOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const [stared, setStared] = useState([]);
-
-  const deleteStar = (user) => {
-    gitHubReposService.unStarring(user.owner.login, user.name)
-    user.stargazers_count -= 1;
-    let filtredElem = stared.filter(person => person.full_name !== user.full_name && person.id !== user.id)
-    setStared(filtredElem)
-  };
-
-  const updateStar = (user) => {
-    gitHubReposService.starring(user.owner.login, user.name)
-    user.stargazers_count += 1;
-    setStared((prev) => {
-     return [...prev, user]
-    })
-  };
 
   const handleClickOpen = (user) => {
    setOpen(true);
@@ -54,12 +38,11 @@ const Home = () => {
       setloading(false);
     });
   };
-
   useEffect(() => {
     gitHubReposService
     .checkStared('https://api.github.com/user/starred')
     .then((data) => {
-     setStared(data)
+     setUsers(data)
     })
   },[]);
 
@@ -69,7 +52,6 @@ const Home = () => {
     let query = input.target.value.toLowerCase();
     debouncer(query);
   };
-  let checkStarring = (user) => stared.findIndex(person => person.full_name === user.full_name) > -1;
 
   let objProps = {
     handleClickOpen,

@@ -1,10 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Cart from '../Cart/Cart';
-const Favorite = props => {
+import './Favorite.css';
+const Favorite = (props) => {
+  const {
+    stared,
+    setStared,
+    updateStar, 
+    deleteStar, 
+    checkStarring } = props;
+    
+  console.log(stared);
   return (
-    <div>
-      <h1>Favorit repo!</h1>
+    <div className="main-favorite">
+      {stared && stared.map((currentUser) => {
+        <div>{currentUser}</div>
+        return (
+          <Cart key={currentUser.id}
+                currentUser={currentUser}
+                updateStar={updateStar}
+                deleteStar={deleteStar}
+                checkStarring={checkStarring}
+            />
+        )
+      })}
     </div>
   )
 }

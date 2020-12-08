@@ -1,0 +1,7 @@
+.main-favorite {
+   display: grid;
+  grid-template-columns: repeat(3, minmax(350px ,1fr));
+  gap: 20px;
+  padding: 20px; 
+}
+

@@ -8,7 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
-import Service from '../../services';
+import GitHubReposService from '../../services';
 import './Table.css'
 const useStyles = makeStyles({
   table: {
@@ -17,6 +17,7 @@ const useStyles = makeStyles({
 });
 
 const BasicTable = (props) => {
+  let gitHubReposService = new GitHubReposService();
   const {
     users,
     loading,
@@ -28,11 +29,10 @@ const BasicTable = (props) => {
     checkStarring
     } = props;
   const classes = useStyles();
-  const service = new Service();
   
   if(loading)  {
     return (
-      <div style={{width: '100%', 'textAlign': 'center'}}>
+      <div style={{width: '100% ', 'textAlign': 'center'}}>
         <CircularProgress disableShrink />
       </div>
     ) 
@@ -56,7 +56,7 @@ const BasicTable = (props) => {
           <TableBody>
             {users.map((user, index) => (
               <TableRow key={user.id}>
-                <TableCell align="right"><span className="couter">{index}</span> </TableCell>
+                <TableCell align="right"><span className="couter">{index+1}</span> </TableCell>
                 <TableCell align="right" style={{cursor:'pointer'}}
                  onClick={() => handleClickOpen(user)}>
                  {user.full_name}

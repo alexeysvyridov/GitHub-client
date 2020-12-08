@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Nav.css';
-const Nav = () => {
+const Nav = ({stared}) => {
   return (
     <nav>
     <ul className="navigation">
@@ -12,8 +12,9 @@ const Nav = () => {
           <NavLink  to="/" className="tab" activeClassName="selected" exact>
             Top Repo
           </NavLink> 
-          <NavLink className="tab" to="/favorite" activeClassName="selected">
-            Favorite Repo 
+          <NavLink className="tab favorite" to="/favorite" activeClassName="selected">
+            Favorite Repo
+            <span className="stared-length">{stared.length}</span> 
           </NavLink>
       </li>
     </ul>
