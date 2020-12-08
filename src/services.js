@@ -1,6 +1,6 @@
 // let _url  = 'https://api.github.com/search/users?q=brad+repos:%3E10+followers:%3E250';
 // let _url  = `https://api.github.com/search/repositories?q=Brad&sort=stars&order=desc`;
-const token = 'token ef99221f7be8cc049a52a15afe15ca7bc989b0ad';
+const token = 'token a7d0717732e2d5b56d196d7f45a0756e06afe136';
   export default class GitHubReposService {
   getUsers = async (url) => {
     try {

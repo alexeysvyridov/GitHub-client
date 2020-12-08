@@ -33,25 +33,23 @@ function App() {
     })
   };
   let checkStarring = (user) => stared.findIndex(person => person.full_name === user.full_name) > -1;
+  let objPops = {
+    stared,
+    setStared,
+    updateStar,
+    deleteStar,
+    checkStarring
+  }
   return (
   <div className="App">
   <Router>
     <Nav stared={stared}/>
     <Switch>
       <Route exact path="/">
-          <Home stared={stared} 
-          setStared={setStared}
-           updateStar={updateStar} 
-           deleteStar={deleteStar}
-          checkStarring={checkStarring}/>
+          <Home {...objPops}/>
       </Route>
       <Route path="/favorite">
-          <Fovorite stared={stared}
-           setStared={setStared}
-           updateStar={updateStar}
-           deleteStar={deleteStar}
-           checkStarring={checkStarring} 
-          />
+          <Fovorite {...objPops}/>
       </Route>
     </Switch>
     </Router>
