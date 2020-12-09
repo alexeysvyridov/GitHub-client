@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import './Cart.css';
  const Cart = ({currentUser, handleClose, deleteStar,updateStar, checkStarring}) => {
   return (
-    <div className="container-modal">
+    <div className="container-modal" key={currentUser.full_name}>
       <header>
         <div className="header-mobal">
             <a href={`${currentUser.repos_url}`}>{currentUser.full_name}</a>
@@ -51,7 +51,6 @@ import './Cart.css';
   )
 }
 Cart.propTypes = {
-  currentUser: PropTypes.object.isRequired,
   updateStar: PropTypes.func.isRequired,
   deleteStar: PropTypes.func.isRequired,
   checkStarring: PropTypes.func.isRequired,

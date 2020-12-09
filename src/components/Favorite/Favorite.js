@@ -7,7 +7,7 @@ const Favorite = (props) => {
     <div className="main-favorite">
       {props.stared && props.stared.map((currentUser) => {
         return (
-          <Cart {...props}/>
+          <Cart currentUser={currentUser} {...props }/>
         )
       })}
     </div>
