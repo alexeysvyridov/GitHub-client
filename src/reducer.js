@@ -4,18 +4,16 @@ let initialState = {
 };
 
 const reducer = (state=initialState, action) => {
-  console.log(state)
-  console.log(action)
   switch(action.type) {
     case INCREASE:
       return {
         ...state,
-        counter: state.payload++
+        counter: state.counter + 1
       }
     case DECREASE:
       return {
         ...state,
-        counter: state.payload--
+        counter: state.counter - 1
       }
     default:
       return state;
