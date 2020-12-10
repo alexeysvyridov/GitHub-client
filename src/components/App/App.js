@@ -1,16 +1,17 @@
 
 import React, {useState,useEffect} from 'react';
 import {BrowserRouter as Router, NavLink, Switch, Route, activeClassName } from 'react-router-dom';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Nav from '../Nav/Nav';
 import Fovorite from '../Favorite/Favorite';
 import Home from '../Home/Home';
 import GitHubReposService from '../../services';
+import {setStared} from '../../actions'
 import './App.css';
 
-function App() {
+function App({stared, setStared}) {
+  console.log(stared)
   let gitHubReposService = new GitHubReposService();
-  const [stared, setStared] = useState([]);
   useEffect(() => {
     gitHubReposService
     .checkStared('https://api.github.com/user/starred')
@@ -40,6 +41,9 @@ function App() {
     deleteStar,
     checkStarring
   }
+  if(!stared) {
+    return <div>stared not downloaded yet!!!</div>
+  }
   return (
   <div className="App">
   <Router>
@@ -57,5 +61,9 @@ function App() {
   );
 
 }
-
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    stared: state.stared
+  }
+}
+export default connect(mapStateToProps, {setStared})(App);

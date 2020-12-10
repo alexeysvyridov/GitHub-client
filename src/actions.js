@@ -1,11 +1,8 @@
-import {INCREASE, DECREASE} from './actionTypes';
-export const Increase = () => {
+import {SET_STARED} from './actionTypes';
+
+export const setStared = (stared) => {
     return {
-        type: INCREASE,
-    }
-}
-export const decrease = () => {
-    return {
-        type: DECREASE,
+        type: SET_STARED,
+        stared: stared
     }
 }

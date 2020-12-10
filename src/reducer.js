@@ -1,19 +1,15 @@
-import {INCREASE, DECREASE} from './actionTypes';
+import {SET_STARED} from './actionTypes';
 let initialState = {
-  counter: 0
+  counter: 0,
+  stared: []
 };
 
 const reducer = (state=initialState, action) => {
   switch(action.type) {
-    case INCREASE:
+    case SET_STARED:
       return {
         ...state,
-        counter: state.counter + 1
-      }
-    case DECREASE:
-      return {
-        ...state,
-        counter: state.counter - 1
+        stared:[...action.stared]
       }
     default:
       return state;
