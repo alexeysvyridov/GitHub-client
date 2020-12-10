@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import InfiniteScroll from 'react-infinite-scroll-component'; 
+import Test from '../Test/Test'
 import './Table.css'
 const useStyles = makeStyles({
   table: {
@@ -40,7 +41,7 @@ const BasicTable = (props) => {
   if(!loading) {
     return (
     <div style={{display: 'flex', width:'750px', height:'600px', overflow:'auto'}}>
-      <TableContainer component={Paper}>
+      {/* <TableContainer component={Paper}>
         <Table stickyHeader>
           <TableHead>
             <TableRow className="background">
@@ -72,7 +73,8 @@ const BasicTable = (props) => {
             ))}
           </TableBody>
         </Table>
-      </TableContainer> 
+      </TableContainer>  */}
+      <Test />
     </div>
     )
   }
