@@ -6,10 +6,10 @@ import Nav from '../Nav/Nav';
 import Fovorite from '../Favorite/Favorite';
 import Home from '../Home/Home';
 import GitHubReposService from '../../services';
-import {setStared} from '../../actions'
+import {setStared, deleteStar, updateStar} from '../../actions';
 import './App.css';
 
-function App({stared, setStared}) {
+function App({stared, setStared, deleteStar, updateStar}) {
   console.log(stared)
   let gitHubReposService = new GitHubReposService();
   useEffect(() => {
@@ -19,20 +19,7 @@ function App({stared, setStared}) {
      setStared(data)
     })
   },[]);
-  const deleteStar = (user) => {
-    gitHubReposService.unStarring(user.owner.login, user.name)
-    user.stargazers_count -= 1;
-    let filtredElem = stared.filter(person => person.full_name !== user.full_name && person.id !== user.id)
-    setStared(filtredElem)
-  };
 
-  const updateStar = (user) => {
-    gitHubReposService.starring(user.owner.login, user.name)
-    user.stargazers_count += 1;
-    setStared((prev) => {
-     return [...prev, user]
-    })
-  };
   let checkStarring = (user) => stared.findIndex(person => person.full_name === user.full_name) > -1;
   let objPops = {
     stared,
@@ -63,7 +50,13 @@ function App({stared, setStared}) {
 }
 const mapStateToProps = (state) => {
   return {
-    stared: state.stared
+    stared: state.stared,
+    user: state.user
   }
 }
-export default connect(mapStateToProps, {setStared})(App);
+const mapDispatchToProps= {
+  setStared,
+  deleteStar,
+  updateStar
+}
+export default connect(mapStateToProps,mapDispatchToProps)(App);
