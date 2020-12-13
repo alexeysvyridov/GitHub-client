@@ -3,7 +3,9 @@ import GitHubReposService from './services';
 let initialState = {
   counter: 0,
   stared: [],
-  user: []
+  user: [],
+  users: [],
+  loading: false
 };
 const gitHubReposService = new GitHubReposService()
 const deleteStar = (user, stared) => {

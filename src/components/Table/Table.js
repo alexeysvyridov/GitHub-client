@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import InfiniteScroll from 'react-infinite-scroll-component'; 
+import {connect} from 'react-redux';
 import './Table.css'
 const useStyles = makeStyles({
   table: {
@@ -79,4 +80,7 @@ const BasicTable = (props) => {
  
 }
 
-export default BasicTable;
+const mapStateToProps = (state) => {
+  
+}
+export default connect()(BasicTable);
