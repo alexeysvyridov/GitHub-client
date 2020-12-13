@@ -1,8 +1,8 @@
 // let _url  = 'https://api.github.com/search/users?q=brad+repos:%3E10+followers:%3E250';
-// let _url  = `https://api.github.com/search/repositories?q=Brad&sort=stars&order=desc`;
-const token = 'token 05bdfc8e718d693c902c241f7e78eff858a8b276';
+let _url  = `https://api.github.com/search/repositories?q=Brad&sort=stars&order=desc`;
+const token = 'token 1b645e8cad0ed916bf658d4a4fe37e41b28aca68';
   export default class GitHubReposService {
-  getUsers = async (url) => {
+  getUsers = async (url=_url) => {
     try {
       const res = await fetch(url, {
         method: 'GET',
@@ -11,9 +11,10 @@ const token = 'token 05bdfc8e718d693c902c241f7e78eff858a8b276';
           'Authorization': token
         }
       });
-      const data = await res.json() 
-      return data;
-    } catch(err) {
+      const data = await res.json();   
+      return data.items;
+    } catch (err) {
+      console.log(err);
       throw new Error(err)
     }
   }
@@ -26,14 +27,15 @@ const token = 'token 05bdfc8e718d693c902c241f7e78eff858a8b276';
           'Accept': 'application/vnd.github.v3+json',
           'Authorization': token
         }
-      })
+      });
       const data = await res.json();
       return data;
     }
     catch(err) {
       throw new Error(err)
     }
-  }
+  };
+
   starring = async (owner, repo) => {
     try {
       const res = await fetch(`https://api.github.com/user/starred/${owner}/${repo}`,
@@ -51,7 +53,8 @@ const token = 'token 05bdfc8e718d693c902c241f7e78eff858a8b276';
       console.log(err)
       throw new Error(err)
     }
-  }
+  };
+
   unStarring = async (owner, repo) => {
     try {
       const res = await fetch(`https://api.github.com/user/starred/${owner}/${repo}`,
@@ -65,10 +68,10 @@ const token = 'token 05bdfc8e718d693c902c241f7e78eff858a8b276';
       return res;
     }
     catch(err) {
-      console.log(err)
-      throw new Error(err)
+      console.log(err);
+      throw new Error(err);
     }
-  };
+  }
 };
 
 new GitHubReposService()

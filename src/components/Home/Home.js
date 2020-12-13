@@ -1,15 +1,19 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import _ from 'lodash'
 import PropTypes from 'prop-types'
 import BasicTable from '../Table/Table';
 import SearchBar from '../Search-bar/Search-bar';
 import GitHubReposService from '../../services';
+import {bindActionCreators} from 'redux'
+import {deleteStar, updateStar} from '../../actions'
 import Cart from '../Cart/Cart';
 import './Home.css';
+import { fetchUsers } from '../../actions';
+import { connect } from 'react-redux';
 
-const Home = ({stared, setStared, deleteStar, updateStar, checkStarring}) => {
+
+const Home = (props) => {
+  let {users, deleteStar, updateStar, checkStarring} = props;
   const [loading, setloading] = useState(false);
-  const [users, setUsers] = useState([]);
   let gitHubReposService = new GitHubReposService();
   const [open, setOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
@@ -25,68 +29,36 @@ const Home = ({stared, setStared, deleteStar, updateStar, checkStarring}) => {
    setCurrentUser({});
   };
 
-  const sendQuery = (query) => {
-    let _url  = `https://api.github.com/search/repositories?q=${query}&sort=stars&order=desc&per_page=10`;
-    gitHubReposService
-    .getUsers(_url)
-      .then((data) => {
-       let item = data.items;
-        setUsers(item);
-      })
-
-    setTimeout(() => {
-      setloading(false);
-    });
-  };
-  useEffect(() => {
-    gitHubReposService
-    .checkStared('https://api.github.com/user/starred')
-    .then((data) => {
-     setUsers(data)
-    })
-  },[]);
-
-  const debouncer = useCallback(_.debounce(q => sendQuery(q), 1500), []); 
-  const onHandleInput = (input) => {
-    setloading(true);
-    let query = input.target.value.toLowerCase();
-    debouncer(query);
-  };
-
-  let objProps = {
-    handleClickOpen,
-    users,
-    loading,
-    stared,
-    setStared,
-    updateStar,
-    deleteStar,
-    currentUser,
-    checkStarring,
-    currentUser,
-    handleClose
-  }
   return (
     <div style={{display:"flex", width:'100%'}}>
       <div className="main-home">
         <div className="search-bar">
-          <SearchBar users={users} onHandleInput={onHandleInput}/>
+          <SearchBar/>
         </div>
         <div className="table">
-          <BasicTable {...objProps} />
+          <BasicTable gitHubReposService={gitHubReposService} />
         </div>
       </div>
-      <div className="modal" style={{display:"inline-block", width: '50%'}}>
+      {/* <div className="modal" style={{display:"inline-block", width: '50%'}}>
         {open && <Cart {...objProps}/>}
-      </div>
+      </div> */}
     </div>
   )
 }
 
-
+const mapStateToProps = (state) => {
+  let {users,loading, _url} = state
+  return {users, loading, _url}
+}
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators ({
+      updateStar, 
+      deleteStar,
+    }, dispatch)
+}
 
 Home.propTypes = {
 
 }
 
-export default Home
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

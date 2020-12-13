@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,7 +9,14 @@ import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import InfiniteScroll from 'react-infinite-scroll-component'; 
+import {bindActionCreators} from 'redux';
 import './Table.css'
+import { connect } from 'react-redux';
+import { 
+  deleteStar,
+  updateStar, 
+  handleClickOpen, 
+  fetchUsers } from '../../actions';
 const useStyles = makeStyles({
   table: {
     width: 450,
@@ -23,10 +30,14 @@ const BasicTable = (props) => {
     handleClickOpen,
     updateStar, 
     deleteStar,
-    checkStarring
+    fetchUsers,
+    dispatch
     } = props;
   const classes = useStyles();
-  
+  let checkStarring = (user) => users.findIndex(person => person.full_name === user.full_name) > -1;
+  useEffect(() => {
+    fetchUsers()
+  }, []);
   if(loading)  {
     return (
       <div style={{width: '100% ', 'textAlign': 'center'}}>
@@ -37,9 +48,9 @@ const BasicTable = (props) => {
   if(!users || users.length === 0 && !loading) {
    return <h1>Has no data in the list....</h1>
   }  
-  if(!loading) {
+  if(users) {
     return (
-    <div style={{display: 'flex', width:'750px', height:'600px', overflow:'auto'}}>
+    <div style={{display: 'flex', width:'750px', height:'77.5vh', overflow:'auto'}}>
       <TableContainer component={Paper}>
         <Table stickyHeader>
           <TableHead>
@@ -78,5 +89,16 @@ const BasicTable = (props) => {
   }
  
 }
-
-export default BasicTable;
+const mapStateToProps = ({users,loading}) => {
+  return {users, loading}
+}
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const {gitHubReposService} = ownProps;
+    return bindActionCreators ({
+      handleClickOpen,
+      updateStar, 
+      deleteStar,
+      fetchUsers: fetchUsers()
+    }, dispatch)
+}
+export default connect(mapStateToProps, mapDispatchToProps)(BasicTable);

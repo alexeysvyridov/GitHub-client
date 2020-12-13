@@ -9,35 +9,24 @@ import GitHubReposService from '../../services';
 import {setStared, deleteStar, updateStar} from '../../actions';
 import './App.css';
 
-function App({stared, setStared, deleteStar, updateStar}) {
-  console.log(stared)
-  let gitHubReposService = new GitHubReposService();
-  useEffect(() => {
-    gitHubReposService
-    .checkStared('https://api.github.com/user/starred')
-    .then((data) => {
-     setStared(data)
-    })
-  },[]);
-
-  let checkStarring = (user) => stared.findIndex(person => person.full_name === user.full_name) > -1;
+function App({users, setStared, deleteStar, updateStar}) {
+ 
   let objPops = {
-    stared,
+    users,
     setStared,
     updateStar,
     deleteStar,
-    checkStarring
   }
-  if(!stared) {
+  if(!users) {
     return <div>stared not downloaded yet!!!</div>
   }
   return (
   <div className="App">
   <Router>
-    <Nav stared={stared}/>
+    <Nav users={users}/>
     <Switch>
       <Route exact path="/">
-          <Home {...objPops}/>
+          <Home/>
       </Route>
       <Route path="/favorite">
           <Fovorite {...objPops}/>
@@ -46,11 +35,10 @@ function App({stared, setStared, deleteStar, updateStar}) {
     </Router>
     </div>
   );
-
-}
+} 
 const mapStateToProps = (state) => {
   return {
-    stared: state.stared,
+    users: state.users,
     user: state.user
   }
 }
