@@ -7,10 +7,11 @@ import {SET_STARED,
 
 import GitHubReposService from './services';
 let initialState = {
-  users: [],
-  loading: null,
-  error: null,
+  stared: [],
   user: [],
+  users: [],
+  loading: false,
+  error: null,
 };
 const gitHubReposService = new GitHubReposService()
 const deleteStar = (user, stared) => {

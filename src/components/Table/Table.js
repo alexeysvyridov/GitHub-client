@@ -10,8 +10,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import InfiniteScroll from 'react-infinite-scroll-component'; 
 import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import './Table.css'
-import { connect } from 'react-redux';
 import { 
   deleteStar,
   updateStar, 
