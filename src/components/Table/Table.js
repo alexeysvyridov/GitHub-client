@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,12 +13,12 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import './Table.css'
 import { 
-  deleteStar,
-  updateStar, 
+  unStarring,
+  setStarring, 
   handleClickOpen, 
   fetchUsers,
   fetchStaredUsers,
-  staredUsers
+  staredUsers,
  } from '../../actions';
 const useStyles = makeStyles({
   table: {
@@ -32,17 +32,31 @@ const BasicTable = (props) => {
     staredUsers,
     loading,
     handleClickOpen,
-    updateStar, 
-    deleteStar,
+    setStarring, 
+    unStarring,
     fetchUsers,
     fetchStaredUsers, 
     } = props;
   const classes = useStyles();
+  const [star, setStar] = useState(null);
   let checkStarring = (user) => staredUsers.findIndex(person => person.full_name === user.full_name) > -1;
+  const setDeleteStar = (user) => {
+    unStarring(user)
+    setStar(false)
+  };
+  const setStarUpdate = (user) => {
+    setStarring(user)
+    setStar(true)
+  };
+
   useEffect(() => {
-    Promise.resolve(fetchUsers())
-      .then(fetchStaredUsers)
+    fetchUsers()
   }, []);
+
+  useEffect(()=> {
+    fetchStaredUsers()
+  }, [star]);
+
   if(loading)  {
     return (
       <div style={{width: '100% ', 'textAlign': 'center'}}>
@@ -78,9 +92,9 @@ const BasicTable = (props) => {
                 <TableCell align="right" style={{position:'relative'}}>
                  <form>
                  {checkStarring(user) ?
-                  (<input type="checkbox" className="star" title="bookmark page" checked={true}  onChange={() => deleteStar(user)} />) 
+                  (<input type="checkbox" className="star" title="bookmark page" checked={true}  onChange={() => setDeleteStar(user)} />) 
                                       :    
-                  (<input type="checkbox" className="star" title="bookmark page" checked={false} onChange={() => updateStar(user)} />)
+                  (<input type="checkbox" className="star" title="bookmark page" checked={false} onChange={() => setStarUpdate(user)} />)
                   } 
                   </form>  
                  </TableCell>
@@ -97,13 +111,12 @@ const BasicTable = (props) => {
 const mapStateToProps = ({users,loading, staredUsers}) => {
   return {users, loading, staredUsers}
 }
-const mapDispatchToProps = (dispatch, ownProps) => {
-  const {gitHubReposService} = ownProps;
+const mapDispatchToProps = (dispatch) => {
     return bindActionCreators ({
       handleClickOpen,
-      updateStar, 
-      deleteStar,
-      fetchUsers: fetchUsers(),
+      setStarring, 
+      unStarring,
+      fetchUsers,
       fetchStaredUsers,
     }, dispatch)
 }

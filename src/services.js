@@ -1,6 +1,6 @@
 // let _url  = 'https://api.github.com/search/users?q=brad+repos:%3E10+followers:%3E250';
 let _url  = `https://api.github.com/search/repositories?q=brad&sort=stars&order=desc`;
-const token = 'token 53dbf9a33f218ef7fda06bb431db5a18b0f18388';
+const token = 'token 3aa74d2222aad3f61f6a474177db6c34155cd317';
   export default class GitHubReposService {
   getUsers = async (url=_url) => {
     try {
@@ -54,24 +54,6 @@ const token = 'token 53dbf9a33f218ef7fda06bb431db5a18b0f18388';
       throw new Error(err)
     }
   };
-
-  unStarring = async (owner, repo) => {
-    try {
-      const res = await fetch(`https://api.github.com/user/starred/${owner}/${repo}`,
-      {
-        method:'DELETE',
-        headers: {
-          'Accept': 'application/vnd.github.v3.star+json',
-          'Authorization': token
-        }
-      })
-      return res;
-    }
-    catch(err) {
-      console.log(err);
-      throw new Error(err);
-    }
-  }
 };
 
 new GitHubReposService()

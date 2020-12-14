@@ -9,7 +9,8 @@ import {
     SET_STARED_USERS
 } from './actionTypes';
 import GitHubReposService from './services';
-const token = 'token 53dbf9a33f218ef7fda06bb431db5a18b0f18388';
+let _url  = `https://api.github.com/search/repositories?q=brad&sort=stars&order=desc`;
+const token = 'token 3aa74d2222aad3f61f6a474177db6c34155cd317';
 const gitHubReposService = new GitHubReposService();
 
 export const setUsers = (users) => {
@@ -29,7 +30,7 @@ export const deleteStar = (user) => {
 export const updateStar = (user) => {
     return {
         type: UPDATE_STAR,
-        user:user
+        user: user
     };
 };
 export const usersLoaded = (user) => {
@@ -64,13 +65,23 @@ export const searchUsers = (users) => {
         payload: users
     };
 };
-export const fetchUsers = () => (url) => (dispatch) =>{
-    console.log(url);
-        dispatch(usersLoaded());
-        gitHubReposService
-        .getUsers()
-        .then((data) => dispatch(setUsers(data)))
-        .catch((err) => dispatch(usersError()));
+
+export const fetchUsers = () => async (dispatch) => {
+  dispatch(usersLoaded());
+  try {
+      const res = await fetch(_url, {
+          method: 'GET',
+          headers: {
+          'Accept': 'application/vnd.github.v3+json',
+          'Authorization': token
+          } 
+      });
+      const data = await res.json();   
+      dispatch(setUsers(data.items));
+      } catch (err) {
+      console.log(err);
+      dispatch(usersError(err));
+      }
 };
 
 export const fetchUsersData = (url) => async (dispatch) => {
@@ -92,10 +103,10 @@ export const fetchUsersData = (url) => async (dispatch) => {
 };
 
 
-export const unStarring =  (owner, repo ) => async (dispatch) => {
-    dispatch(usersLoaded())
+export const unStarring =  (user ) => async (dispatch) => {
+    const {owner, name} = user;
     try {
-      const res = await fetch(`https://api.github.com/user/starred/${owner}/${repo}`,
+      const res = await fetch(`https://api.github.com/user/starred/${owner.login}/${name}`,
       {
         method:'DELETE',
         headers: {
@@ -103,7 +114,7 @@ export const unStarring =  (owner, repo ) => async (dispatch) => {
           'Authorization': token
         }
       })
-      dispatch(deleteStar());
+      dispatch(deleteStar(user));
       return res;
     }
     catch(err) {
@@ -133,18 +144,18 @@ export const fetchStaredUsers =  () => async (dispatch) => {
   };
 
 
-export const starring =  (owner, repo) => async (dispatch) => {
+export const setStarring =  (user) => async (dispatch) => {
+    const { owner, name } = user;
     try {
-      const res = await fetch(`https://api.github.com/user/starred/${owner}/${repo}`,
+      const res = await fetch(`https://api.github.com/user/starred/${owner.login}/${name}`,
       {
         method:'PUT',
         headers: {
           'Accept': 'application/vnd.github.v3.star+json',
           'Authorization': token
         }
-      })
-      console.log(res);
-      return res;
+      });
+      dispatch(updateStar(user))
     }
     catch(err) {
       console.log(err)
