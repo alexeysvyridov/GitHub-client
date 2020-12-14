@@ -16,7 +16,10 @@ import {
   deleteStar,
   updateStar, 
   handleClickOpen, 
-  fetchUsers } from '../../actions';
+  fetchUsers,
+  fetchStaredUsers,
+  staredUsers
+ } from '../../actions';
 const useStyles = makeStyles({
   table: {
     width: 450,
@@ -26,17 +29,19 @@ const useStyles = makeStyles({
 const BasicTable = (props) => {
   const {
     users,
+    staredUsers,
     loading,
     handleClickOpen,
     updateStar, 
     deleteStar,
     fetchUsers,
-    dispatch
+    fetchStaredUsers, 
     } = props;
   const classes = useStyles();
-  let checkStarring = (user) => users.findIndex(person => person.full_name === user.full_name) > -1;
+  let checkStarring = (user) => staredUsers.findIndex(person => person.full_name === user.full_name) > -1;
   useEffect(() => {
-    fetchUsers()
+    Promise.resolve(fetchUsers())
+      .then(fetchStaredUsers)
   }, []);
   if(loading)  {
     return (
@@ -89,8 +94,8 @@ const BasicTable = (props) => {
   }
  
 }
-const mapStateToProps = ({users,loading}) => {
-  return {users, loading}
+const mapStateToProps = ({users,loading, staredUsers}) => {
+  return {users, loading, staredUsers}
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
   const {gitHubReposService} = ownProps;
@@ -98,7 +103,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       handleClickOpen,
       updateStar, 
       deleteStar,
-      fetchUsers: fetchUsers()
+      fetchUsers: fetchUsers(),
+      fetchStaredUsers,
     }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BasicTable);

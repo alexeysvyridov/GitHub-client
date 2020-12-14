@@ -1,23 +1,23 @@
-import {SET_STARED, 
+import {FETCH_USERS, 
   DELETE_STAR, 
   UPDATE_STAR, 
   USERS_ERROR,  
   USERS_LOADED,  
-  SEARCH_USERS} from './actionTypes';
+  SEARCH_USERS,
+  SET_STARED_USERS} from './actionTypes';
 
 import GitHubReposService from './services';
 let initialState = {
-  stared: [],
+  staredUsers: [],
   user: [],
   users: [],
   loading: false,
   error: null,
 };
 const gitHubReposService = new GitHubReposService()
-const deleteStar = (user, stared) => {
-  gitHubReposService.unStarring(user.owner.login, user.name)
+const deleteStar = (user, staredUsers) => {
   user.stargazers_count -= 1;
-  let filtredElem = stared.filter(person => {
+  let filtredElem = staredUsers.filter(person => {
   return  person.full_name !== user.full_name &&
           person.id !== user.id;
   });
@@ -31,15 +31,18 @@ const updateStar = (user, stared) => {
 };
 
 const reducer = (state=initialState, action) => {
-  console.log(action);
-  console.log(state);
   switch(action.type) {
-    case SET_STARED:
+    case FETCH_USERS:
       return {
         ...state,
-        users:[...action.users],
+        users: action.users.slice(),
         loading:false
       };
+    case SET_STARED_USERS:
+      return {
+        ...state,
+        staredUsers: [...action.staredUsers]
+      }
     case USERS_ERROR:
       return {
         ...state,

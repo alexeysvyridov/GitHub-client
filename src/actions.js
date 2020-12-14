@@ -1,18 +1,20 @@
 import {
-    SET_STARED,
+    FETCH_USERS,
     DELETE_STAR,
     UPDATE_STAR, 
     USERS_LOADED,
     USERS_ERROR,
     OPEN_USER,
-    SEARCH_USERS
+    SEARCH_USERS,
+    SET_STARED_USERS
 } from './actionTypes';
 import GitHubReposService from './services';
-const token = 'token 1b645e8cad0ed916bf658d4a4fe37e41b28aca68';
+const token = 'token 53dbf9a33f218ef7fda06bb431db5a18b0f18388';
 const gitHubReposService = new GitHubReposService();
-export const setStared = (users) => {
+
+export const setUsers = (users) => {
     return {
-        type: SET_STARED,
+        type: FETCH_USERS,
         users: users
     };
 };
@@ -47,6 +49,14 @@ export const handleClickOpen = (user) => {
         user: user
     };
 };
+
+export const setStaredUsers = (users) => {
+    return {
+        type: SET_STARED_USERS,
+        staredUsers: users
+    };
+};
+
 export const searchUsers = (users) => {
     console.log(users);
     return {
@@ -59,7 +69,7 @@ export const fetchUsers = () => (url) => (dispatch) =>{
         dispatch(usersLoaded());
         gitHubReposService
         .getUsers()
-        .then((data) => dispatch(setStared(data)))
+        .then((data) => dispatch(setUsers(data)))
         .catch((err) => dispatch(usersError()));
 };
 
@@ -80,3 +90,64 @@ export const fetchUsersData = (url) => async (dispatch) => {
         dispatch(usersError(err));
         }
 };
+
+
+export const unStarring =  (owner, repo ) => async (dispatch) => {
+    dispatch(usersLoaded())
+    try {
+      const res = await fetch(`https://api.github.com/user/starred/${owner}/${repo}`,
+      {
+        method:'DELETE',
+        headers: {
+          'Accept': 'application/vnd.github.v3.star+json',
+          'Authorization': token
+        }
+      })
+      dispatch(deleteStar());
+      return res;
+    }
+    catch(err) {
+      console.log(err);
+      dispatch(usersError(err));
+    }
+  };
+
+
+export const fetchStaredUsers =  () => async (dispatch) => {
+    try {
+      const res = await fetch('https://api.github.com/user/starred',
+      {
+        method:'GET',
+        headers: {
+          'Accept': 'application/vnd.github.v3+json',
+          'Authorization': token
+        }
+      });
+      const data = await res.json();
+      dispatch(setStaredUsers(data))
+      return data;
+    }
+    catch(err) {
+      throw new Error(err)
+    }
+  };
+
+
+export const starring =  (owner, repo) => async (dispatch) => {
+    try {
+      const res = await fetch(`https://api.github.com/user/starred/${owner}/${repo}`,
+      {
+        method:'PUT',
+        headers: {
+          'Accept': 'application/vnd.github.v3.star+json',
+          'Authorization': token
+        }
+      })
+      console.log(res);
+      return res;
+    }
+    catch(err) {
+      console.log(err)
+      throw new Error(err)
+    }
+  };
