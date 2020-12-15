@@ -28,10 +28,11 @@ const useStyles = makeStyles({
 
 const BasicTable = (props) => {
   const {
+    user,
     users,
     staredUsers,
     loading,
-    handleClickOpen,
+    handleOpenUser,
     setStarring, 
     unStarring,
     fetchUsers,
@@ -85,7 +86,7 @@ const BasicTable = (props) => {
               <TableRow key={user.id}>
                 <TableCell align="right"><span className="couter">{index+1}</span> </TableCell>
                 <TableCell align="right" style={{cursor:'pointer'}}
-                 onClick={() => handleClickOpen(user)}>
+                 onClick={() => handleOpenUser(user)}>
                  {user.full_name}
                 </TableCell>
                 <TableCell align="right">{user.stargazers_count}</TableCell>
@@ -108,16 +109,17 @@ const BasicTable = (props) => {
   }
  
 }
-const mapStateToProps = ({users,loading, staredUsers}) => {
-  return {users, loading, staredUsers}
+const mapStateToProps = ({user,users,loading, staredUsers}, ownProps) => {
+  const {handleOpenUser} = ownProps;
+  return {user, users, loading, staredUsers, handleOpenUser}
 }
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators ({
-      handleClickOpen,
       setStarring, 
       unStarring,
       fetchUsers,
       fetchStaredUsers,
+      handleClickOpen
     }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BasicTable);

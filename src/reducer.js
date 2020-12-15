@@ -4,14 +4,16 @@ import {FETCH_USERS,
   USERS_ERROR,  
   USERS_LOADED,  
   SEARCH_USERS,
-  SET_STARED_USERS} from './actionTypes';
+  SET_STARED_USERS,
+  OPEN_USER} from './actionTypes';
 
 // import GitHubReposService from './services';
 let initialState = {
   staredUsers: [],
-  user: [],
+  user: {},
   users: [],
   loading: false,
+  openUser: null,
   error: null,
 };
 // const gitHubReposService = new GitHubReposService()
@@ -73,6 +75,12 @@ const reducer = (state=initialState, action) => {
         users: deleteStar(action.user, state.users),
         loading:false
       };
+    case OPEN_USER:
+      return {
+        ...state,
+        user: action.user,
+        openUser: action.openUser
+      }
     default:
       return state;
   }

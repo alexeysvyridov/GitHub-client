@@ -7,28 +7,29 @@ import {bindActionCreators} from 'redux'
 import {deleteStar, updateStar} from '../../actions'
 import Cart from '../Cart/Cart';
 import './Home.css';
-import { fetchUsers } from '../../actions';
+import { fetchUsers, handleClickOpen } from '../../actions';
 import { connect } from 'react-redux';
 
 
 const Home = (props) => {
-  let {users, deleteStar, updateStar, checkStarring} = props;
-  const [loading, setloading] = useState(false);
-  let gitHubReposService = new GitHubReposService();
-  const [open, setOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
+  let {user,users, deleteStar, updateStar, staredUsers, openUser, handleClickOpen} = props;
+  const [currentUser, setCurrentUser] = useState({})
+  const [open, setOpen] = useState(openUser);
 
-  const handleClickOpen = (user) => {
+  const handleOpenUser = (user) => {
    setOpen(true);
    setCurrentUser(user);
+   handleClickOpen({user, openUser:true})
   };
 
   const handleClose = (user, isAdd) => {
    isAdd ? updateStar(user) : deleteStar(user); 
    setOpen(false);
    setCurrentUser({});
+   handleClickOpen({user, openUser:false})
   };
 
+  let checkStarring = (user) => staredUsers.findIndex(person => person.full_name === user.full_name) > -1;
   return (
     <div style={{display:"flex", width:'100%'}}>
       <div className="main-home">
@@ -36,24 +37,29 @@ const Home = (props) => {
           <SearchBar/>
         </div>
         <div className="table">
-          <BasicTable gitHubReposService={gitHubReposService} />
+          <BasicTable handleOpenUser={handleOpenUser}/>
         </div>
       </div>
-      {/* <div className="modal" style={{display:"inline-block", width: '50%'}}>
-        {open && <Cart {...objProps}/>}
-      </div> */}
+      <div className="modal" style={{display:"inline-block", width: '50%'}}>
+        {open && <Cart currentUser={currentUser} 
+                      handleClose={handleClose} 
+                      deleteStar={deleteStar} 
+                      updateStar={updateStar} 
+                      checkStarring={checkStarring}/>}
+      </div>
     </div>
   )
 }
 
 const mapStateToProps = (state) => {
-  let {users,loading, _url} = state
-  return {users, loading, _url}
+  let {user, users,loading, _url, openUser, staredUsers} = state
+  return {user, users, loading, _url, openUser, staredUsers}
 }
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators ({
       updateStar, 
       deleteStar,
+      handleClickOpen
     }, dispatch)
 }
 
