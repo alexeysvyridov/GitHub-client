@@ -2,10 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import './Cart.css';
- const Cart = ({staredUsers,currentUser, deleteStar,updateStar}) => {
-  const handleClose = (user, isAdd) => {
-    isAdd ? updateStar(user) : deleteStar(user); 
-   };
+import { connect } from 'react-redux';
+ const Cart = (props) => {
+   let {
+     staredUsers,
+     currentUser, 
+     deleteStar, 
+     updateStar, 
+     handleClose
+    } = props;
    let checkStarring = (user) => staredUsers.findIndex(person => person.full_name === user.full_name) > -1;
   return (
     <div className="container-modal" key={currentUser.full_name}>
@@ -38,7 +43,7 @@ import './Cart.css';
       <p className="block-padding">{currentUser.description}</p>
       <footer className="footer">
         {checkStarring(currentUser) ?
-          <Button onClick={() => handleClose(currentUser, false)}
+          <Button onClick={() => deleteStar(currentUser, false)}
           variant="contained" 
           color="primary" disableElevation>
             Delete from favorite
@@ -59,4 +64,8 @@ Cart.propTypes = {
   updateStar: PropTypes.func.isRequired,
   deleteStar: PropTypes.func.isRequired,
 }
-export default Cart;
+
+// const mapStateToProps = ({}) => {
+//   return {}
+// }
+export default connect()(Cart);

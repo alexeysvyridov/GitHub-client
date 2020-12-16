@@ -1,59 +1,112 @@
 // let _url  = 'https://api.github.com/search/users?q=brad+repos:%3E10+followers:%3E250';
+import {
+  usersLoaded,
+  usersError,
+  deleteStar,
+  setStaredUsers, 
+  updateStar,
+  searchUsers,
+  setUsers
+} from './actions'
 let _url  = `https://api.github.com/search/repositories?q=brad&sort=stars&order=desc`;
-const token = 'token 3aa74d2222aad3f61f6a474177db6c34155cd317';
+const token = 'token 266ae408d2e281c6af9c675812d9a145418eb173';
+
   export default class GitHubReposService {
-  getUsers = async (url=_url) => {
-    try {
-      const res = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'Authorization': token
+    fetchUsers = () => async (dispatch) => {
+      dispatch(usersLoaded());
+      try {
+          const res = await fetch(_url, {
+              method: 'GET',
+              headers: {
+              'Accept': 'application/vnd.github.v3+json',
+              'Authorization': token
+              } 
+          });
+          const data = await res.json();   
+          dispatch(setUsers(data.items));
+          } catch (err) {
+          console.log(err);
+          dispatch(usersError(err));
+          }
+    };
+    
+   fetchUsersData = (url) => async (dispatch) => {
+        dispatch(usersLoaded());
+        try {
+            const res = await fetch(url, {
+                method: 'GET',
+                headers: {
+                'Accept': 'application/vnd.github.v3+json',
+                'Authorization': token
+                } 
+            });
+            const data = await res.json();   
+            dispatch(searchUsers(data.items));
+            } catch (err) {
+            console.log(err);
+            dispatch(usersError(err));
+            }
+    };
+    
+    
+    unStarring =  (user ) => async (dispatch) => {
+        const {owner, name} = user;
+        try {
+          const res = await fetch(`https://api.github.com/user/starred/${owner.login}/${name}`,
+          {
+            method:'DELETE',
+            headers: {
+              'Accept': 'application/vnd.github.v3.star+json',
+              'Authorization': token
+            }
+          })
+          dispatch(deleteStar(user));
+          return res;
         }
-      });
-      const data = await res.json();   
-      return data.items;
-    } catch (err) {
-      console.log(err);
-      throw new Error(err)
-    }
-  }
-  checkStared = async () => {
-    try {
-      const res = await fetch('https://api.github.com/user/starred',
-      {
-        method:'GET',
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'Authorization': token
+        catch(err) {
+          console.log(err);
+          dispatch(usersError(err));
         }
-      });
-      const data = await res.json();
-      return data;
-    }
-    catch(err) {
-      throw new Error(err)
-    }
-  };
-
-  starring = async (owner, repo) => {
-    try {
-      const res = await fetch(`https://api.github.com/user/starred/${owner}/${repo}`,
-      {
-        method:'PUT',
-        headers: {
-          'Accept': 'application/vnd.github.v3.star+json',
-          'Authorization': token
+      };
+    
+    
+     fetchStaredUsers =  () => async (dispatch) => {
+        try {
+          const res = await fetch('https://api.github.com/user/starred',
+          {
+            method:'GET',
+            headers: {
+              'Accept': 'application/vnd.github.v3+json',
+              'Authorization': token
+            }
+          });
+          const data = await res.json();
+          dispatch(setStaredUsers(data))
+          return data;
         }
-      })
-      console.log(res);
-      return res;
+        catch(err) {
+          throw new Error(err)
+        }
+      };
+    
+    
+   setStarring =  (user) => async (dispatch) => {
+        const { owner, name } = user;
+        try {
+          const res = await fetch(`https://api.github.com/user/starred/${owner.login}/${name}`,
+          {
+            method:'PUT',
+            headers: {
+              'Accept': 'application/vnd.github.v3.star+json',
+              'Authorization': token
+            }
+          });
+          dispatch(updateStar(user))
+        }
+        catch(err) {
+          console.log(err)
+          throw new Error(err)
+        }
+      };
     }
-    catch(err) {
-      console.log(err)
-      throw new Error(err)
-    }
-  };
-};
-
 new GitHubReposService()

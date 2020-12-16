@@ -10,7 +10,7 @@ import {FETCH_USERS,
 // import GitHubReposService from './services';
 let initialState = {
   staredUsers: [],
-  user: {},
+  user: null,
   users: [],
   loading: false,
   openUser: null,
@@ -72,15 +72,17 @@ const reducer = (state=initialState, action) => {
     case DELETE_STAR:
       return {
         ...state,
-        users: deleteStar(action.user, state.users),
-        loading:false
+        staredUsers: deleteStar(action.user, state.users),
+        user:{},
+        loading:false,
+        openUser: false
       };
     case OPEN_USER:
       return {
         ...state,
         user: action.user,
-        openUser: action.openUser
-      }
+        openUser: true
+      };
     default:
       return state;
   }

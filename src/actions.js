@@ -10,7 +10,7 @@ import {
 } from './actionTypes';
 import GitHubReposService from './services';
 let _url  = `https://api.github.com/search/repositories?q=brad&sort=stars&order=desc`;
-const token = 'token ee918cd3428315a68aa7fb9f47040236dcf93dff';
+const token = 'token 266ae408d2e281c6af9c675812d9a145418eb173';
 const gitHubReposService = new GitHubReposService();
 
 export const setUsers = (users) => {
@@ -44,13 +44,10 @@ export const usersError = (err) => {
         payload: err
     };
 };
-export const handleClickOpen = ({user, openClose}) => {
+export const handleClickOpen = (user) => {
     return {
         type: OPEN_USER,
-        payload: { 
-          user,
-          openClose 
-        }
+        user: user
     };
 };
 
@@ -106,7 +103,7 @@ export const fetchUsersData = (url) => async (dispatch) => {
 };
 
 
-export const unStarring =  (user ) => async (dispatch) => {
+export const unStarring =  (user) => async (dispatch) => {
     const {owner, name} = user;
     try {
       const res = await fetch(`https://api.github.com/user/starred/${owner.login}/${name}`,

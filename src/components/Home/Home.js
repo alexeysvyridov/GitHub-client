@@ -14,23 +14,16 @@ import { connect } from 'react-redux';
 const Home = (props) => {
   let {
     user, 
-    deleteStar, 
     updateStar, 
     staredUsers, 
     openUser, 
     handleClickOpen
   } = props;
-  const [currentUser, setCurrentUser] = useState({})
-  const [open, setOpen] = useState(openUser);
 
   const handleOpenUser = (user) => {
-   setOpen(true);
-   setCurrentUser(user);
-   handleClickOpen({user, openUser:true})
+   handleClickOpen(user)
   };
-
-
-
+  
   let checkStarring = (user) => staredUsers.findIndex(person => person.full_name === user.full_name) > -1;
   return (
     <div style={{display:"flex", width:'100%'}}>
@@ -42,19 +35,18 @@ const Home = (props) => {
           <BasicTable handleOpenUser={handleOpenUser}/>
         </div>
       </div>
-      {open && <div className="modal" style={{display:"inline-block", width: '50%'}}>
-      <Cart         currentUser={currentUser} 
-                    deleteStar={deleteStar} 
-                    updateStar={updateStar} 
-                    staredUsers ={staredUsers}
-                    checkStarring={checkStarring}/>
+      {openUser && <div className="modal" style={{display:"inline-block", width: '50%'}}>
+        <Cart currentUser={user} 
+              updateStar={updateStar} 
+              staredUsers ={staredUsers}
+              checkStarring={checkStarring}/>
       </div>}
     </div>
   )
 }
 
-const mapStateToProps = (state) => {
-  return {...state}
+const mapStateToProps = ({user, staredUsers,openUser}) => {
+  return {user, staredUsers,openUser}
 }
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators ({
