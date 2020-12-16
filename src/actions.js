@@ -10,7 +10,7 @@ import {
 } from './actionTypes';
 import GitHubReposService from './services';
 let _url  = `https://api.github.com/search/repositories?q=brad&sort=stars&order=desc`;
-const token = 'token f77f7a1a0acd5325f336c294b173a55f9a4d8f73';
+const token = 'token ee918cd3428315a68aa7fb9f47040236dcf93dff';
 const gitHubReposService = new GitHubReposService();
 
 export const setUsers = (users) => {
@@ -62,7 +62,6 @@ export const setStaredUsers = (users) => {
 };
 
 export const searchUsers = (users) => {
-    console.log(users);
     return {
         type: SEARCH_USERS,
         payload: users

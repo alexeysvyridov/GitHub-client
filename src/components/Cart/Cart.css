@@ -1,11 +1,12 @@
 a,div,p {
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
 }
 .container-modal {
   width: 100%;
   height: auto;
-
+  display: grid;
+  align-items: baseline;
 }
 .container-modal {
   background-color: #d1d1d1;
@@ -27,7 +28,7 @@ header {
   border-bottom: 1px solid #808080;
 }
 header, .body-modal {
-  padding: 10px;
+  padding: 5px;
 }
 input {
   height: auto;

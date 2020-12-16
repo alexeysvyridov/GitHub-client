@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import './Cart.css';
- const Cart = ({currentUser, handleClose, deleteStar,updateStar, checkStarring}) => {
+ const Cart = ({staredUsers,currentUser, deleteStar,updateStar}) => {
+  const handleClose = (user, isAdd) => {
+    isAdd ? updateStar(user) : deleteStar(user); 
+   };
+   let checkStarring = (user) => staredUsers.findIndex(person => person.full_name === user.full_name) > -1;
   return (
     <div className="container-modal" key={currentUser.full_name}>
       <header>
@@ -50,9 +54,9 @@ import './Cart.css';
     </div>
   )
 }
+
 Cart.propTypes = {
   updateStar: PropTypes.func.isRequired,
   deleteStar: PropTypes.func.isRequired,
-  checkStarring: PropTypes.func.isRequired,
 }
 export default Cart;

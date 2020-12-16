@@ -2,21 +2,38 @@
 import React, {useState,useEffect} from 'react';
 import {BrowserRouter as Router, NavLink, Switch, Route, activeClassName } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Nav from '../Nav/Nav';
 import Fovorite from '../Favorite/Favorite';
 import Home from '../Home/Home';
 import GitHubReposService from '../../services';
-import {setUsers, deleteStar, updateStar} from '../../actions';
+import {
+  setUsers, 
+  deleteStar, 
+  updateStar, 
+  fetchUsers, 
+  fetchStaredUsers
+} from '../../actions';
 import './App.css';
 
-function App({users}) {
+function App({users, staredUsers, fetchUsers, fetchStaredUsers}) {
+  useEffect(() => {
+    fetchUsers()
+  },[]);
+
+  useEffect(()=> {
+    fetchStaredUsers()
+  },[]);
+
+
   if(!users) {
     return <div>stared not downloaded yet!!!</div>
   }
+
   return (
   <div className="App">
   <Router>
-    <Nav users={users}/>
+    <Nav staredUsers={staredUsers}/>
     <Switch>
       <Route exact path="/">
           <Home/>
@@ -29,10 +46,13 @@ function App({users}) {
     </div>
   );
 } 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({users, staredUsers}) => {
   return {
-    users: state.users,
+    staredUsers,
+    users
   }
 }
-
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({fetchUsers, fetchStaredUsers}, dispatch)
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -35,7 +35,6 @@ const BasicTable = (props) => {
     handleOpenUser,
     setStarring, 
     unStarring,
-    fetchUsers,
     fetchStaredUsers, 
     } = props;
   const classes = useStyles();
@@ -49,10 +48,6 @@ const BasicTable = (props) => {
     setStarring(user)
     setStar(true)
   };
-
-  useEffect(() => {
-    fetchUsers()
-  }, []);
 
   useEffect(()=> {
     fetchStaredUsers()
@@ -117,7 +112,6 @@ const mapDispatchToProps = (dispatch) => {
     return bindActionCreators ({
       setStarring, 
       unStarring,
-      fetchUsers,
       fetchStaredUsers,
       handleClickOpen
     }, dispatch)

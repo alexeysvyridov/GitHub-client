@@ -12,7 +12,14 @@ import { connect } from 'react-redux';
 
 
 const Home = (props) => {
-  let {user,users, deleteStar, updateStar, staredUsers, openUser, handleClickOpen} = props;
+  let {
+    user, 
+    deleteStar, 
+    updateStar, 
+    staredUsers, 
+    openUser, 
+    handleClickOpen
+  } = props;
   const [currentUser, setCurrentUser] = useState({})
   const [open, setOpen] = useState(openUser);
 
@@ -22,12 +29,7 @@ const Home = (props) => {
    handleClickOpen({user, openUser:true})
   };
 
-  const handleClose = (user, isAdd) => {
-   isAdd ? updateStar(user) : deleteStar(user); 
-   setOpen(false);
-   setCurrentUser({});
-   handleClickOpen({user, openUser:false})
-  };
+
 
   let checkStarring = (user) => staredUsers.findIndex(person => person.full_name === user.full_name) > -1;
   return (
@@ -40,20 +42,19 @@ const Home = (props) => {
           <BasicTable handleOpenUser={handleOpenUser}/>
         </div>
       </div>
-      <div className="modal" style={{display:"inline-block", width: '50%'}}>
-        {open && <Cart currentUser={currentUser} 
-                      handleClose={handleClose} 
-                      deleteStar={deleteStar} 
-                      updateStar={updateStar} 
-                      checkStarring={checkStarring}/>}
-      </div>
+      {open && <div className="modal" style={{display:"inline-block", width: '50%'}}>
+      <Cart         currentUser={currentUser} 
+                    deleteStar={deleteStar} 
+                    updateStar={updateStar} 
+                    staredUsers ={staredUsers}
+                    checkStarring={checkStarring}/>
+      </div>}
     </div>
   )
 }
 
 const mapStateToProps = (state) => {
-  let {user, users,loading, _url, openUser, staredUsers} = state
-  return {user, users, loading, _url, openUser, staredUsers}
+  return {...state}
 }
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators ({
@@ -64,7 +65,10 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 Home.propTypes = {
-
+  staredUsers: PropTypes.array.isRequired,
+  updateStar: PropTypes.func.isRequired,
+  deleteStar: PropTypes.func.isRequired,
+  handleClickOpen: PropTypes.func.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
