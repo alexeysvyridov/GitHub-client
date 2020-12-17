@@ -8,10 +8,9 @@ import {
     SEARCH_USERS,
     SET_STARED_USERS
 } from './actionTypes';
-import GitHubReposService from './services';
+
 let _url  = `https://api.github.com/search/repositories?q=brad&sort=stars&order=desc`;
-const token = 'token 266ae408d2e281c6af9c675812d9a145418eb173';
-const gitHubReposService = new GitHubReposService();
+const token = 'token a69d8d5fa1144481c2ead5fb5db409616e2e0a7b';
 
 export const setUsers = (users) => {
     return {
@@ -104,6 +103,7 @@ export const fetchUsersData = (url) => async (dispatch) => {
 
 
 export const unStarring =  (user) => async (dispatch) => {
+  console.log(user)
     const {owner, name} = user;
     try {
       const res = await fetch(`https://api.github.com/user/starred/${owner.login}/${name}`,
@@ -115,6 +115,7 @@ export const unStarring =  (user) => async (dispatch) => {
         }
       })
       dispatch(deleteStar(user));
+      console.log(res)
       return res;
     }
     catch(err) {

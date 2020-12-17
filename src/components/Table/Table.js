@@ -11,15 +11,8 @@ import Paper from '@material-ui/core/Paper';
 import InfiniteScroll from 'react-infinite-scroll-component'; 
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {  fetchStaredUsers, unStarring, setStarring} from '../../services';
 import './Table.css'
-import { 
-  unStarring,
-  setStarring, 
-  handleClickOpen, 
-  fetchUsers,
-  fetchStaredUsers,
-  staredUsers,
- } from '../../actions';
 const useStyles = makeStyles({
   table: {
     width: 450,
@@ -28,7 +21,6 @@ const useStyles = makeStyles({
 
 const BasicTable = (props) => {
   const {
-    user,
     users,
     staredUsers,
     loading,
@@ -51,7 +43,7 @@ const BasicTable = (props) => {
 
   useEffect(()=> {
     fetchStaredUsers()
-  }, [star]);
+  }, []);
 
   if(loading)  {
     return (
@@ -113,7 +105,6 @@ const mapDispatchToProps = (dispatch) => {
       setStarring, 
       unStarring,
       fetchStaredUsers,
-      handleClickOpen
     }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BasicTable);

@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
    let {
      staredUsers,
      currentUser, 
-     deleteStar, 
-     updateStar, 
+     unStarring, 
+     setStarring, 
      handleClose
     } = props;
    let checkStarring = (user) => staredUsers.findIndex(person => person.full_name === user.full_name) > -1;
@@ -20,9 +20,9 @@ import { connect } from 'react-redux';
             <div style={{display:"flex", alignItems: 'center'}}>
               <div style={{position: "relative", width: '40px'}}>
               {checkStarring(currentUser) ?
-                    (<input type="checkbox" className="star" title="bookmark page" checked={true}  onChange={() => deleteStar(currentUser)} />) 
+                    (<input type="checkbox" className="star" title="bookmark page" checked={true}  onChange={() => unStarring(currentUser)} />) 
                                         :    
-                    (<input type="checkbox" className="star" title="bookmark page" checked={false} onChange={() => updateStar(currentUser)} />)
+                    (<input type="checkbox" className="star" title="bookmark page" checked={false} onChange={() => setStarring(currentUser)} />)
                     } 
               </div>
               <span>{currentUser.stargazers_count}</span>
@@ -43,7 +43,7 @@ import { connect } from 'react-redux';
       <p className="block-padding">{currentUser.description}</p>
       <footer className="footer">
         {checkStarring(currentUser) ?
-          <Button onClick={() => deleteStar(currentUser, false)}
+          <Button onClick={() => unStarring(currentUser, false)}
           variant="contained" 
           color="primary" disableElevation>
             Delete from favorite
@@ -61,8 +61,8 @@ import { connect } from 'react-redux';
 }
 
 Cart.propTypes = {
-  updateStar: PropTypes.func.isRequired,
-  deleteStar: PropTypes.func.isRequired,
+  setStarring: PropTypes.func.isRequired,
+  unStarring: PropTypes.func.isRequired,
 }
 
 // const mapStateToProps = ({}) => {

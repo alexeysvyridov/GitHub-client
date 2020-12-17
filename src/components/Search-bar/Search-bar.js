@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import _ from 'lodash'
-import { fetchUsersData } from '../../actions';
+import { fetchUsersData } from '../../services';
 import './Search-bar.css';
 
 const useStyles = makeStyles((theme) => ({
