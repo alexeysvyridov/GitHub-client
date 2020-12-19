@@ -7,6 +7,8 @@ a,div,p {
   height: auto;
   display: grid;
   align-items: baseline;
+  max-width: 500px;
+  position: relative;
 }
 .container-modal {
   background-color: #d1d1d1;
@@ -35,11 +37,10 @@ input {
 }
 .header-mobal {
   width: 100%;
-  height: 40px;
-  line-height: 40px;
   color:#002884;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .block-padding {
   padding: 0px 10px;
@@ -56,11 +57,15 @@ input {
   border: 1px solid #d1d1d1;
 }
 footer {
-  padding: 0px 0px 10px 10px;
+  margin: 10px;
+  position: relative;
+  bottom: 0px;
+  height: 40px;
 }
 footer.footer > button {
   background-color: #c481de;
   color:#fff;
   padding: 8px;
+  position: absolute;
 }
 

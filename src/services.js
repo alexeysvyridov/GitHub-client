@@ -7,9 +7,9 @@ import {
   updateStar,
   searchUsers,
   setUsers
-} from './actions'
+} from './actions';
 let _url  = `https://api.github.com/search/repositories?q=brad&sort=stars&order=desc`;
-const token = 'token 51d127e8b2c5dc7286cd5f3ab7227b853ef2d1fd';
+const token = 'token 4792dfdf79c43c5ef9631fefde45ca5ccccc436e';
 
 export default class GitHubReposService {
     fetchUsers = () => async (dispatch) => {
@@ -81,7 +81,7 @@ export default class GitHubReposService {
             } 
         });
         const data = await res.json();   
-        dispatch(searchUsers(data.items));
+        dispatch(setStaredUsers(data));
         } catch (err) {
         console.log(err);
         dispatch(usersError(err));
@@ -129,4 +129,4 @@ export default class GitHubReposService {
     }
   }
 }
-  new GitHubReposService()
+new GitHubReposService()

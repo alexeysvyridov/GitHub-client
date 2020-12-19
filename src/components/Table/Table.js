@@ -15,16 +15,11 @@ import PropTypes from 'prop-types';
 import GitHubReposService  from '../../services';
 
 import './Table.css'
-import { 
-  unStarring,
-  setStarring, 
+import {  
   handleClickOpen, 
-  fetchUsers,
-  fetchStaredUsers,
-  staredUsers,
 } from '../../actions';
 
-let gitHubReposService = new GitHubReposService()
+let gitHubReposService  = new GitHubReposService ()
 
 const useStyles = makeStyles({
   table: {
@@ -121,7 +116,7 @@ const mapStateToProps = ({user,users,loading, staredUsers}, ownProps) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators ({
-      setStarring: gitHubReposService.setStarring, 
+      setStarring:  gitHubReposService.setStarring, 
       unStarring:gitHubReposService.unStarring,
       fetchStaredUsers:gitHubReposService.fetchStaredUsers,
       handleClickOpen

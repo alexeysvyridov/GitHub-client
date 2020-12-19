@@ -10,7 +10,6 @@ import {
 } from './actionTypes';
 
 let _url  = `https://api.github.com/search/repositories?q=brad&sort=stars&order=desc`;
-const token = 'token a69d8d5fa1144481c2ead5fb5db409616e2e0a7b';
 
 export const setUsers = (users) => {
     return {

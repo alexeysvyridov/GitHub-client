@@ -20,13 +20,11 @@ let initialState = {
 };
 
 const deleteStar = (user, staredUsers) => {
-  console.log(staredUsers)
   user.stargazers_count -= 1;
   let filtredElem = staredUsers.filter(person => {
   return  person.full_name !== user.full_name &&
           person.id !== user.id;
   });
-  console.log(filtredElem)
   return filtredElem;
 };
 
@@ -35,7 +33,7 @@ const updateStar = (user, stared) => {
   return [...stared, user]
 };
 
-const reducer = (state=initialState, action) => { 
+const reducer = (state=initialState, action) => {
   switch(action.type) {
     case FETCH_USERS:
       return {
@@ -64,7 +62,7 @@ const reducer = (state=initialState, action) => {
       return {
         ...state,
         loading:false,
-        users: [...action.payload]
+        users: [...action.payload] || []
       };
     case UPDATE_STAR:
         return {
