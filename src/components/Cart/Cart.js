@@ -1,14 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import './Cart.css';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import GitHubReposService  from '../../services';
+import './Cart.css';
+import { setStarring } from '../../actions';
+let gitHubReposService = new GitHubReposService()
  const Cart = (props) => {
    let {
      staredUsers,
      currentUser, 
-     deleteStar, 
-     updateStar, 
+     unStarring, 
+     setStarring, 
      handleClose
     } = props;
    let checkStarring = (user) => staredUsers.findIndex(person => person.full_name === user.full_name) > -1;
@@ -20,9 +24,9 @@ import { connect } from 'react-redux';
             <div style={{display:"flex", alignItems: 'center'}}>
               <div style={{position: "relative", width: '40px'}}>
               {checkStarring(currentUser) ?
-                    (<input type="checkbox" className="star" title="bookmark page" checked={true}  onChange={() => deleteStar(currentUser)} />) 
+                    (<input type="checkbox" className="star" title="bookmark page" checked={true}  onChange={() => unStarring(currentUser)} />) 
                                         :    
-                    (<input type="checkbox" className="star" title="bookmark page" checked={false} onChange={() => updateStar(currentUser)} />)
+                    (<input type="checkbox" className="star" title="bookmark page" checked={false} onChange={() => setStarring(currentUser)} />)
                     } 
               </div>
               <span>{currentUser.stargazers_count}</span>
@@ -43,13 +47,13 @@ import { connect } from 'react-redux';
       <p className="block-padding">{currentUser.description}</p>
       <footer className="footer">
         {checkStarring(currentUser) ?
-          <Button onClick={() => deleteStar(currentUser, false)}
+          <Button onClick={() => unStarring(currentUser)}
           variant="contained" 
           color="primary" disableElevation>
             Delete from favorite
           </Button>
          :
-         <Button onClick={() => handleClose(currentUser, true)}
+         <Button onClick={() => setStarring(currentUser)}
           variant="contained" 
           color="primary" disableElevation>
             Add from favorite
@@ -61,11 +65,20 @@ import { connect } from 'react-redux';
 }
 
 Cart.propTypes = {
-  updateStar: PropTypes.func.isRequired,
-  deleteStar: PropTypes.func.isRequired,
+  staredUsers: PropTypes.array.isRequired,
+  currentUser: PropTypes.object.isRequired,
+  unStarring: PropTypes.func.isRequired,
+  setStarring: PropTypes.func.isRequired,
 }
-
-// const mapStateToProps = ({}) => {
-//   return {}
-// }
-export default connect()(Cart);
+const mapStateToProps = ({staredUsers}, ownProps) => {
+ const {currentUser} = ownProps;
+  return {
+    staredUsers,
+    currentUser, 
+  }
+}
+const mapDispatchToProps = {
+  unStarring:gitHubReposService.unStarring,
+  setStarring:gitHubReposService.setStarring
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

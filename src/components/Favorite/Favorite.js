@@ -4,14 +4,10 @@ import Cart from "../Cart/Cart";
 import { connect } from "react-redux";
 import "./Favorite.css";
 import { bindActionCreators } from "redux";
-import {deleteStar,updateStar} from '../../actions';
 const Favorite = (props) => {
   let {
     staredUsers,
-    deleteStar,
-    updateStar,
   } = props;
-
 
   return (
     <div className="main-favorite">
@@ -21,8 +17,6 @@ const Favorite = (props) => {
             <Cart key={currentUser.id}
               staredUsers ={staredUsers}
               currentUser={currentUser}
-              deleteStar={deleteStar}
-              updateStar={updateStar}
             />
           );
         })}
@@ -32,14 +26,7 @@ const Favorite = (props) => {
 const mapStateToProps = (state) => {
   return { ...state };
 };
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
-    { updateStar, deleteStar},
-     dispatch)
-}
 Favorite.propTypes = {
   staredUsers: PropTypes.array.isRequired,
-  updateStar: PropTypes.func.isRequired,
-  deleteStar: PropTypes.func.isRequired,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Favorite);
+export default connect(mapStateToProps)(Favorite);

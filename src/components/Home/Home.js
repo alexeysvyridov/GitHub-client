@@ -4,7 +4,6 @@ import BasicTable from '../Table/Table';
 import SearchBar from '../Search-bar/Search-bar';
 import GitHubReposService from '../../services';
 import {bindActionCreators} from 'redux'
-import {deleteStar, updateStar} from '../../actions'
 import Cart from '../Cart/Cart';
 import './Home.css';
 import { fetchUsers, handleClickOpen } from '../../actions';
@@ -14,7 +13,6 @@ import { connect } from 'react-redux';
 const Home = (props) => {
   let {
     user, 
-    updateStar, 
     staredUsers, 
     openUser, 
     handleClickOpen
@@ -37,7 +35,6 @@ const Home = (props) => {
       </div>
       {openUser && <div className="modal" style={{display:"inline-block", width: '50%'}}>
         <Cart currentUser={user} 
-              updateStar={updateStar} 
               staredUsers ={staredUsers}
               checkStarring={checkStarring}/>
       </div>}
@@ -50,16 +47,12 @@ const mapStateToProps = ({user, staredUsers,openUser}) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators ({
-      updateStar, 
-      deleteStar,
       handleClickOpen
     }, dispatch)
 }
 
 Home.propTypes = {
   staredUsers: PropTypes.array.isRequired,
-  updateStar: PropTypes.func.isRequired,
-  deleteStar: PropTypes.func.isRequired,
   handleClickOpen: PropTypes.func.isRequired,
 }
 

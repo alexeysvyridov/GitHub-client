@@ -11,6 +11,9 @@ import Paper from '@material-ui/core/Paper';
 import InfiniteScroll from 'react-infinite-scroll-component'; 
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import GitHubReposService  from '../../services';
+
 import './Table.css'
 import { 
   unStarring,
@@ -19,7 +22,10 @@ import {
   fetchUsers,
   fetchStaredUsers,
   staredUsers,
- } from '../../actions';
+} from '../../actions';
+
+let gitHubReposService = new GitHubReposService()
+
 const useStyles = makeStyles({
   table: {
     width: 450,
@@ -104,15 +110,21 @@ const BasicTable = (props) => {
   }
  
 }
+Table.property = {
+  unStarring: PropTypes.func.isRequired,
+  setStarring: PropTypes.func.isRequired,
+  fetchStaredUsers: PropTypes.func.isRequired,
+  handleClickOpen: PropTypes.func.isRequired,
+}
 const mapStateToProps = ({user,users,loading, staredUsers}, ownProps) => {
   const {handleOpenUser} = ownProps;
   return {user, users, loading, staredUsers, handleOpenUser}
 }
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators ({
-      setStarring, 
-      unStarring,
-      fetchStaredUsers,
+      setStarring: gitHubReposService.setStarring, 
+      unStarring:gitHubReposService.unStarring,
+      fetchStaredUsers:gitHubReposService.fetchStaredUsers,
       handleClickOpen
     }, dispatch)
 }

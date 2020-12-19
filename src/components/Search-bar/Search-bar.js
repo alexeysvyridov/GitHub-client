@@ -1,12 +1,12 @@
 import React, {useState, useCallback} from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
-import {bindActionCreators} from 'redux';
 import _ from 'lodash'
-import { fetchUsersData } from '../../actions';
 import './Search-bar.css';
-
+import GitHubReposService from '../../services';
+let gitHubReposService = new GitHubReposService();
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
@@ -38,9 +38,8 @@ const useStyles = makeStyles((theme) => ({
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  console.log(ownProps);
     return bindActionCreators ({
-      fetchUsersData
+      fetchUsersData:gitHubReposService.fetchUsersData
     }, dispatch)
 }
 export default connect(null, mapDispatchToProps)(SearchBar);

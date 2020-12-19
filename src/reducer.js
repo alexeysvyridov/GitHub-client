@@ -43,7 +43,7 @@ const reducer = (state=initialState, action) => {
     case SET_STARED_USERS:
       return {
         ...state,
-        staredUsers: [...action.staredUsers]
+        staredUsers: [...action.staredUsers] || []
       }
     case USERS_ERROR:
       return {
@@ -72,7 +72,7 @@ const reducer = (state=initialState, action) => {
     case DELETE_STAR:
       return {
         ...state,
-        staredUsers: deleteStar(action.user, state.users),
+        staredUsers: deleteStar(action.user, state.staredUsers),
         user:{},
         loading:false,
         openUser: false
