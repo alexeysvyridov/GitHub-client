@@ -2,13 +2,11 @@ import React, {useState, useEffect, useCallback} from 'react';
 import PropTypes from 'prop-types'
 import BasicTable from '../Table/Table';
 import SearchBar from '../Search-bar/Search-bar';
-import GitHubReposService from '../../services';
 import {bindActionCreators} from 'redux'
 import Cart from '../Cart/Cart';
 import './Home.css';
-import { fetchUsers, handleClickOpen } from '../../actions';
+import { handleClickOpen } from '../../actions';
 import { connect } from 'react-redux';
-
 
 const Home = (props) => {
   let {

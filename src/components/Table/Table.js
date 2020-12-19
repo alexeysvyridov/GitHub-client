@@ -34,7 +34,6 @@ const useStyles = makeStyles({
 
 const BasicTable = (props) => {
   const {
-    user,
     users,
     staredUsers,
     loading,
@@ -57,7 +56,7 @@ const BasicTable = (props) => {
 
   useEffect(()=> {
     fetchStaredUsers()
-  }, [star]);
+  }, []);
 
   if(loading)  {
     return (
