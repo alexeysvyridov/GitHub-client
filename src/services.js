@@ -9,7 +9,7 @@ import {
   setUsers
 } from './actions';
 let _url  = `https://api.github.com/search/repositories?q=brad&per_page=10&sort=stars&order=desc`;
-const token = 'token f1cfa5f0718cb21418d81da2bfbe7d1b9e78c6e5';
+const token = 'token 64a75047c40ed09321a84d71907b02919390131a';
 
 export default class GitHubReposService {
     fetchUsers = () => async (dispatch) => {
@@ -31,22 +31,22 @@ export default class GitHubReposService {
     };
     
    fetchUsersData = (url) => async (dispatch) => {
-        dispatch(usersLoaded());
-        try {
-            const res = await fetch(url, {
-                method: 'GET',
-                headers: {
-                'Accept': 'application/vnd.github.v3+json',
-                'Authorization': token
-                } 
-            });
-            const data = await res.json();   
+      // dispatch(usersLoaded());
+      try {
+          const res = await fetch(url, {
+              method: 'GET',
+              headers: {
+              'Accept': 'application/vnd.github.v3+json',
+              'Authorization': token
+              } 
+          });
+          const data = await res.json();   
             console.log(data)
-            dispatch(searchUsers(data.items));
-            } catch (err) {
-            console.log(err);
-            dispatch(usersError(err));
-            }
+          dispatch(searchUsers(data.items));
+          } catch (err) {
+          console.log(err);
+          dispatch(usersError(err));
+        }
     };
     
     

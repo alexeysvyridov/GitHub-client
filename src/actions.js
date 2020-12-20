@@ -66,6 +66,6 @@ export const searchUsers = (users) => {
 export const setQuery = (query) => {
     return {
         type: SET_QUERY,
-        payload: query
+        query: query
     };
 };

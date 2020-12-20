@@ -14,7 +14,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import GitHubReposService  from '../../services';
 
-import './Table.css'
+import './Table.css';
 import {  
   handleClickOpen, 
 } from '../../actions';
@@ -36,19 +36,27 @@ const BasicTable = (props) => {
     setStarring, 
     unStarring,
     fetchStaredUsers, 
+    fetchUsersData,
+    query
     } = props;
   const classes = useStyles();
+  const [url, setUrl] = useState('');
   let checkStarring = (user) => staredUsers.findIndex(person => person.full_name === user.full_name) > -1;
   const setDeleteStar = (user) => {
-    unStarring(user)
+    unStarring(user);
   };
   const setStarUpdate = (user) => {
-    setStarring(user)
+    setStarring(user);
   };
 
-  useEffect(()=> {
-    fetchStaredUsers()
-  }, []);
+  const fetchUser = (val) => {
+    console.log(val);
+    let _url  = `https://api.github.com/search/repositories?q=${query}&sort=stars&order=desc&per_page=${users.length+ 10}`;
+    setUrl(_url)
+  };  
+  useEffect(() => {
+    fetchUsersData(url);
+  }, [url]);
 
   if(loading)  {
     return (
@@ -64,10 +72,11 @@ const BasicTable = (props) => {
     return (
     <InfiniteScroll
       dataLength={users.length}
-      // loader={<CircularProgress disableShrink />}
+      loader={<h4>Loading more 2 itens...</h4>}
       hasMore={true}
+      next={fetchUser}
     >
-      <div style={{display: 'flex', width:'750px', height:'77.5vh', overflow:'auto'}}>
+      <div style={{display: 'flex', width:'750px',height:'100%'}}>
         <TableContainer component={Paper}>
           <Table stickyHeader>
             <TableHead>
@@ -112,16 +121,18 @@ Table.property = {
   setStarring: PropTypes.func.isRequired,
   fetchStaredUsers: PropTypes.func.isRequired,
   handleClickOpen: PropTypes.func.isRequired,
+  fetchUsersData: PropTypes.func.isRequired,
 }
-const mapStateToProps = ({user,users,loading, staredUsers}, ownProps) => {
+const mapStateToProps = ({user,users,loading, staredUsers, query}, ownProps) => {
   const {handleOpenUser} = ownProps;
-  return {user, users, loading, staredUsers, handleOpenUser}
+  return {user, users, loading, staredUsers, handleOpenUser, query}
 }
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators ({
       setStarring:  gitHubReposService.setStarring, 
       unStarring:gitHubReposService.unStarring,
       fetchStaredUsers:gitHubReposService.fetchStaredUsers,
+      fetchUsersData: gitHubReposService.fetchUsersData,
       handleClickOpen
     }, dispatch)
 }

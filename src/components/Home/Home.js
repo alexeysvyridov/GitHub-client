@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import BasicTable from '../Table/Table';
 import SearchBar from '../Search-bar/Search-bar';
-import {bindActionCreators} from 'redux'
+import {bindActionCreators} from 'redux';
 import Cart from '../Cart/Cart';
 import './Home.css';
 import { handleClickOpen } from '../../actions';

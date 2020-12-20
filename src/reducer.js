@@ -10,7 +10,6 @@ import {
   SET_QUERY
 } from './actionTypes';
 
-
 let initialState = {
   staredUsers: [],
   user: null,

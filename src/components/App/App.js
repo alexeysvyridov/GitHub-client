@@ -11,9 +11,6 @@ import './App.css';
 let gitHubReposService = new GitHubReposService()
 
 function App({users, staredUsers, fetchUsers, fetchStaredUsers}) {
-  useEffect(() => {
-    fetchUsers()
-  },[]);
 
   useEffect(()=> {
     fetchStaredUsers()
@@ -49,7 +46,6 @@ const mapStateToProps = ({users, staredUsers}) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      fetchUsers: gitHubReposService.fetchUsers,
       fetchStaredUsers:gitHubReposService.fetchStaredUsers
     }, dispatch )
 }

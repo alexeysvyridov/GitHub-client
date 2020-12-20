@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import _ from 'lodash'
 import './Search-bar.css';
 import GitHubReposService from '../../services';
+import { setQuery } from '../../actions';
 let gitHubReposService = new GitHubReposService();
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,10 +15,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
- const SearchBar = ({fetchUsersData}) => {
+ const SearchBar = ({fetchUsersData, users, setQuery}) => {
   const sendQuery = (query) => {
     let url  = `https://api.github.com/search/repositories?q=${query}&sort=stars&order=desc&per_page=10`;
-    fetchUsersData(url)
+    fetchUsersData(url);
+    setQuery(query);
    };
  
    const debouncer = useCallback(_.debounce(q => sendQuery(q), 1500), []); 
@@ -39,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators ({
-      fetchUsersData:gitHubReposService.fetchUsersData
+      fetchUsersData:gitHubReposService.fetchUsersData,
+      setQuery
     }, dispatch)
 }
 export default connect(null, mapDispatchToProps)(SearchBar);
