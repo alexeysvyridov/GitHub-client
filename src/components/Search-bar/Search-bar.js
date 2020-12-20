@@ -16,8 +16,8 @@ const useStyles = makeStyles((theme) => ({
 }));
  const SearchBar = ({fetchUsersData}) => {
   const sendQuery = (query) => {
-    let _url  = `https://api.github.com/search/repositories?q=${query}&sort=stars&order=desc&per_page=10`;
-    fetchUsersData(_url)
+    let url  = `https://api.github.com/search/repositories?q=${query}&sort=stars&order=desc&per_page=10`;
+    fetchUsersData(url)
    };
  
    const debouncer = useCallback(_.debounce(q => sendQuery(q), 1500), []); 

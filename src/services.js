@@ -8,8 +8,8 @@ import {
   searchUsers,
   setUsers
 } from './actions';
-let _url  = `https://api.github.com/search/repositories?q=brad&sort=stars&order=desc`;
-const token = 'token 1e87e99ba77f592bb024f419b265f68b07d38b16';
+let _url  = `https://api.github.com/search/repositories?q=brad&per_page=10&sort=stars&order=desc`;
+const token = 'token f1cfa5f0718cb21418d81da2bfbe7d1b9e78c6e5';
 
 export default class GitHubReposService {
     fetchUsers = () => async (dispatch) => {
@@ -41,6 +41,7 @@ export default class GitHubReposService {
                 } 
             });
             const data = await res.json();   
+            console.log(data)
             dispatch(searchUsers(data.items));
             } catch (err) {
             console.log(err);

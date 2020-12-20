@@ -6,7 +6,8 @@ import {
     USERS_ERROR,
     OPEN_USER,
     SEARCH_USERS,
-    SET_STARED_USERS
+    SET_STARED_USERS,
+    SET_QUERY
 } from './actionTypes';
 
 let _url  = `https://api.github.com/search/repositories?q=brad&sort=stars&order=desc`;
@@ -60,5 +61,11 @@ export const searchUsers = (users) => {
     return {
         type: SEARCH_USERS,
         payload: users
+    };
+};
+export const setQuery = (query) => {
+    return {
+        type: SET_QUERY,
+        payload: query
     };
 };

@@ -2,10 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import GitHubReposService  from '../../services';
 import './Cart.css';
-import { setStarring } from '../../actions';
 let gitHubReposService = new GitHubReposService()
  const Cart = (props) => {
    let {
@@ -13,7 +11,6 @@ let gitHubReposService = new GitHubReposService()
      currentUser, 
      unStarring, 
      setStarring, 
-     handleClose
     } = props;
    let checkStarring = (user) => staredUsers.findIndex(person => person.full_name === user.full_name) > -1;
   return (

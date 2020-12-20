@@ -38,15 +38,12 @@ const BasicTable = (props) => {
     fetchStaredUsers, 
     } = props;
   const classes = useStyles();
-  const [star, setStar] = useState(null);
   let checkStarring = (user) => staredUsers.findIndex(person => person.full_name === user.full_name) > -1;
   const setDeleteStar = (user) => {
     unStarring(user)
-    setStar(false)
   };
   const setStarUpdate = (user) => {
     setStarring(user)
-    setStar(true)
   };
 
   useEffect(()=> {
@@ -65,41 +62,47 @@ const BasicTable = (props) => {
   }  
   if(users) {
     return (
-    <div style={{display: 'flex', width:'750px', height:'77.5vh', overflow:'auto'}}>
-      <TableContainer component={Paper}>
-        <Table stickyHeader>
-          <TableHead>
-            <TableRow className="background">
-              <TableCell align="right">№</TableCell>  
-              <TableCell align="right">Repo</TableCell>
-              <TableCell align="right">Stars</TableCell>
-              <TableCell align="right">Fav</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.map((user, index) => (
-              <TableRow key={user.id}>
-                <TableCell align="right"><span className="couter">{index+1}</span> </TableCell>
-                <TableCell align="right" style={{cursor:'pointer'}}
-                 onClick={() => handleOpenUser(user)}>
-                 {user.full_name}
-                </TableCell>
-                <TableCell align="right">{user.stargazers_count}</TableCell>
-                <TableCell align="right" style={{position:'relative'}}>
-                 <form>
-                 {checkStarring(user) ?
-                  (<input type="checkbox" className="star" title="bookmark page" checked={true}  onChange={() => setDeleteStar(user)} />) 
-                                      :    
-                  (<input type="checkbox" className="star" title="bookmark page" checked={false} onChange={() => setStarUpdate(user)} />)
-                  } 
-                  </form>  
-                 </TableCell>
+    <InfiniteScroll
+      dataLength={users.length}
+      // loader={<CircularProgress disableShrink />}
+      hasMore={true}
+    >
+      <div style={{display: 'flex', width:'750px', height:'77.5vh', overflow:'auto'}}>
+        <TableContainer component={Paper}>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow className="background">
+                <TableCell align="right">№</TableCell>  
+                <TableCell align="right">Repo</TableCell>
+                <TableCell align="right">Stars</TableCell>
+                <TableCell align="right">Fav</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer> 
-    </div>
+            </TableHead>
+            <TableBody>
+              {users.map((user, index) => (
+                <TableRow key={user.id}>
+                  <TableCell align="right"><span className="couter">{index+1}</span> </TableCell>
+                  <TableCell align="right" style={{cursor:'pointer'}}
+                  onClick={() => handleOpenUser(user)}>
+                  {user.full_name}
+                  </TableCell>
+                  <TableCell align="right">{user.stargazers_count}</TableCell>
+                  <TableCell align="right" style={{position:'relative'}}>
+                  <form>
+                  {checkStarring(user) ?
+                    (<input type="checkbox" className="star" title="bookmark page" checked={true}  onChange={() => setDeleteStar(user)} />) 
+                                        :    
+                    (<input type="checkbox" className="star" title="bookmark page" checked={false} onChange={() => setStarUpdate(user)} />)
+                    } 
+                    </form>  
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer> 
+      </div>
+    </InfiniteScroll>
     )
   }
  

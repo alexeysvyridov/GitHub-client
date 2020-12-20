@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types'
 import BasicTable from '../Table/Table';
 import SearchBar from '../Search-bar/Search-bar';

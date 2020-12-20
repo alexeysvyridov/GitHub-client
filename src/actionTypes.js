@@ -6,3 +6,4 @@ export const USERS_ERROR = 'USERS_ERROR';
 export const OPEN_USER = 'OPEN_USER';
 export const SEARCH_USERS = 'SEARCH_USERS';
 export const SET_STARED_USERS = 'SET_STARED_USERS';
+export const SET_QUERY = 'SET_QUERY';

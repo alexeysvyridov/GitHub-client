@@ -6,7 +6,8 @@ import {
   USERS_LOADED,  
   SEARCH_USERS,
   SET_STARED_USERS,
-  OPEN_USER
+  OPEN_USER,
+  SET_QUERY
 } from './actionTypes';
 
 
@@ -17,6 +18,7 @@ let initialState = {
   loading: false,
   openUser: null,
   error: null,
+  query: ''
 };
 
 const deleteStar = (user, staredUsers) => {
@@ -84,6 +86,11 @@ const reducer = (state=initialState, action) => {
         user: action.user,
         openUser: true
       };
+    case SET_QUERY:
+      return {
+        ...state,
+        query: action.query
+      }
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 
-import React, {useState,useEffect} from 'react';
-import {BrowserRouter as Router, NavLink, Switch, Route, activeClassName } from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Nav from '../Nav/Nav';
