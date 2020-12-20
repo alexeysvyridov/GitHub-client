@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   )
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
     return bindActionCreators ({
       fetchUsersData:gitHubReposService.fetchUsersData
     }, dispatch)

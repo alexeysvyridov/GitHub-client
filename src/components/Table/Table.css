@@ -12,5 +12,6 @@ table {
 }
 
 .MuiTableCell-root.MuiTableCell-head {
-  background-color: #c481de;
+  color:#fff;
+  background-color: #000;
 }

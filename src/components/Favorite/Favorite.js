@@ -1,9 +1,9 @@
-import React, {useEffect} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Cart from "../Cart/Cart";
 import { connect } from "react-redux";
 import "./Favorite.css";
-import { bindActionCreators } from "redux";
+
 const Favorite = (props) => {
   let {
     staredUsers,

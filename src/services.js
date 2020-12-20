@@ -9,7 +9,7 @@ import {
   setUsers
 } from './actions';
 let _url  = `https://api.github.com/search/repositories?q=brad&sort=stars&order=desc`;
-const token = 'token cc1b4d96077a265353b7277ff3e5a0ca97ef17c9';
+const token = 'token 1e87e99ba77f592bb024f419b265f68b07d38b16';
 
 export default class GitHubReposService {
     fetchUsers = () => async (dispatch) => {

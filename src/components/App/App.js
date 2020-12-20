@@ -7,13 +7,6 @@ import Nav from '../Nav/Nav';
 import Fovorite from '../Favorite/Favorite';
 import Home from '../Home/Home';
 import GitHubReposService from '../../services';
-import {
-  setUsers, 
-  deleteStar, 
-  updateStar, 
-  fetchUsers, 
-  fetchStaredUsers
-} from '../../actions';
 import './App.css';
 let gitHubReposService = new GitHubReposService()
 

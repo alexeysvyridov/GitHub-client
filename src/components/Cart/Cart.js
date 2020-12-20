@@ -20,7 +20,7 @@ let gitHubReposService = new GitHubReposService()
     <div className="container-modal" key={currentUser.full_name}>
       <header>
         <div className="header-mobal">
-            <a href={`${currentUser.repos_url}`}>{currentUser.full_name}</a>
+            <a href={`https://github.com/${currentUser.repos_url}`}>{currentUser.full_name}</a>
             <div style={{display:"flex", alignItems: 'center'}}>
               <div style={{position: "relative", width: '40px'}}>
               {checkStarring(currentUser) ?
