@@ -72,7 +72,7 @@ const BasicTable = (props) => {
     return (
     <InfiniteScroll
       dataLength={users.length}
-      loader={<h4>Loading more 2 itens...</h4>}
+      loader={<h4>Loading 10 new users...</h4>}
       hasMore={true}
       next={fetchUser}
     >
