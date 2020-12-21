@@ -9,7 +9,7 @@ import {
   setUsers
 } from './actions';
 let _url  = `https://api.github.com/search/repositories?q=brad&per_page=10&sort=stars&order=desc`;
-const token = 'token 2c2a81b88046787b8a32c3803c71ec4f37850561';
+const token = 'token 518c2c80711cf9014a59a426ce850e7200754449';
 
 export default class GitHubReposService {
     fetchUsers = () => async (dispatch) => {
@@ -114,7 +114,7 @@ export default class GitHubReposService {
  setStarring =  (user) => async (dispatch) => {
     const { owner, name } = user;
     try {
-      const res = await fetch(`https://api.github.com/user/starred/${owner.login}/${name}`,
+       await fetch(`https://api.github.com/user/starred/${owner.login}/${name}`,
       {
         method:'PUT',
         headers: {
@@ -125,8 +125,8 @@ export default class GitHubReposService {
       dispatch(updateStar(user))
     }
     catch(err) {
-      console.log(err)
-      throw new Error(err)
+      console.log(err);
+      dispatch(usersError(err));
     }
   }
 }
